@@ -5,7 +5,7 @@ import commands from './commands';
 dotenv.config();
 
 const client = new Client({
-    intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES'],
+    intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'],
 });
 
 client.once('ready', async () => {
@@ -18,8 +18,11 @@ client.once('ready', async () => {
     console.log(client.user?.tag);
 });
 
+//client.on('messageCreate', async (message: Message) => {});
+
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) {
+        console.log(interaction.type);
         return;
     }
     for (const command of commands) {

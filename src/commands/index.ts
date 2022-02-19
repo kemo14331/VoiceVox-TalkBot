@@ -1,1 +1,1 @@
-export default [import('./ping')];
+export default [import('./ping'), import('./summon'), import('./leave')];
