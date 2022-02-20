@@ -18,7 +18,16 @@ client.once('ready', async () => {
     console.log(client.user?.tag);
 });
 
-//client.on('messageCreate', async (message: Message) => {});
+//client.on('messageCreate', async (message: Message) => {});\\
+
+client.on('voiceStateUpdate', async (_, newState) => {
+    if (newState.guild.me?.voice.channel) {
+        if (!newState.channel?.members.some((member) => member.id !== client.user?.id && !member.user.bot)) {
+            console.log('Leaved All Members');
+            newState.guild.me?.voice.disconnect();
+        }
+    }
+});
 
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) {
