@@ -27,7 +27,10 @@ async function run(interaction: BaseCommandInteraction) {
             });
             interaction.reply(CommandReply.info(`${voiceChannel.toString()} に参加しました。`));
         } else {
-            interaction.reply(CommandReply.error('Botを呼び出すにはボイスチャンネルに参加してください。', true));
+            interaction.reply({
+                options: CommandReply.error('Botを呼び出すにはボイスチャンネルに参加してください。', true),
+                ephemeral: true,
+            });
         }
     } else {
         interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
