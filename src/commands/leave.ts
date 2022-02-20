@@ -1,8 +1,8 @@
-import { ApplicationCommandDataResolvable, BaseCommandInteraction } from 'discord.js';
+import { ApplicationCommandData, BaseCommandInteraction } from 'discord.js';
 import { MainProvider } from '../providers/MainProvider';
 import { CommandReply } from '../util/CommandReply';
 
-const data: ApplicationCommandDataResolvable = {
+const data: ApplicationCommandData = {
     name: 'leave',
     description: 'botをボイスチャンネルから退出させる',
 };

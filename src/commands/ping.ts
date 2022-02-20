@@ -1,7 +1,7 @@
-import { ApplicationCommandDataResolvable, BaseCommandInteraction } from 'discord.js';
+import { ApplicationCommandData, BaseCommandInteraction } from 'discord.js';
 import { MainProvider } from '../providers/MainProvider';
 
-const data: ApplicationCommandDataResolvable = {
+const data: ApplicationCommandData = {
     name: 'ping',
     description: 'pongを返す',
 };
