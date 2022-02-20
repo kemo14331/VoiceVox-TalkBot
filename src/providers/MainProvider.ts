@@ -1,5 +1,5 @@
 import { ISESSION } from '../types/ISettionTypes';
 
-export interface SessionProvider {
+export interface MainProvider {
     sessions: ISESSION[];
 }

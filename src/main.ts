@@ -1,13 +1,17 @@
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import commands from './commands';
-import { SessionProvider } from './providers/SessionProvider';
+import { MainProvider } from './providers/MainProvider';
+//import { TalkEngine } from './talkLib/talkEngine';
 import { BotMessage } from './util/BotMessage';
 
 dotenv.config();
 
 // セッションの初期化
-let sessionProvider: SessionProvider = { sessions: [] };
+let mainProvider: MainProvider = { sessions: [] };
+
+// eslint-disable-next-line no-unused-vars
+//const engine = new TalkEngine();
 
 const client = new Client({
     intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'],
@@ -26,11 +30,12 @@ client.once('ready', async () => {
     }
     console.log('Ready');
     console.log(`Login as ${client.user?.tag}`);
+    //console.log(await engine.getVersion());
 });
 
 client.on('messageCreate', async (message) => {
     if (message.guild) {
-        let session = sessionProvider.sessions.find(
+        let session = mainProvider.sessions.find(
             (session) => session.textChannel.id === message.channelId && !message.author.bot
         );
         if (session) {
@@ -44,11 +49,11 @@ client.on('voiceStateUpdate', async (_, newState) => {
     if (newState.guild.me?.voice.channel) {
         if (!newState.guild.me?.voice.channel.members.some((member) => !member.voice.mute && !member.user.bot)) {
             console.log(`Leaved All Members: ${newState.guild.me.voice.channel.toString()}`);
-            for (let i = 0; i < sessionProvider.sessions.length; i++) {
-                let session = sessionProvider.sessions[i];
+            for (let i = 0; i < mainProvider.sessions.length; i++) {
+                let session = mainProvider.sessions[i];
                 if (session.guild.id === newState.guild.id) {
                     session.textChannel.send(BotMessage.info(`${session.voiceChannel.toString()} から切断しました。`));
-                    sessionProvider.sessions.splice(i);
+                    mainProvider.sessions.splice(i);
                 }
             }
             newState.guild.me?.voice.disconnect();
@@ -63,7 +68,7 @@ client.on('interactionCreate', async (interaction) => {
     }
     for (const command of commands) {
         if ((await command).data.name == (interaction as CommandInteraction).commandName) {
-            await (await command).run(interaction as CommandInteraction, sessionProvider);
+            await (await command).run(interaction as CommandInteraction, mainProvider);
         }
     }
 });

@@ -1,13 +1,13 @@
 import { ApplicationCommandDataResolvable, BaseCommandInteraction } from 'discord.js';
-import { SessionProvider } from '../providers/SessionProvider';
-import { CommandReply } from '../util.ts/CommandReply';
+import { MainProvider } from '../providers/MainProvider';
+import { CommandReply } from '../util/CommandReply';
 
 const data: ApplicationCommandDataResolvable = {
     name: 'leave',
     description: 'botをボイスチャンネルから退出させる',
 };
 // eslint-disable-next-line no-unused-vars
-async function run(interaction: BaseCommandInteraction, sessionProvider: SessionProvider) {
+async function run(interaction: BaseCommandInteraction, mainProvider: MainProvider) {
     if (interaction.guild) {
         if (interaction.guild.me?.voice.channel) {
             interaction.guild.me?.voice.disconnect();
