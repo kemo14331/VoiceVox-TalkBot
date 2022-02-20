@@ -1,5 +1,6 @@
 import { joinVoiceChannel } from '@discordjs/voice';
 import { ApplicationCommandDataResolvable, BaseCommandInteraction } from 'discord.js';
+import { CommandReply } from '../util.ts/CommandReply';
 
 const data: ApplicationCommandDataResolvable = {
     name: 'summon',
@@ -12,11 +13,11 @@ async function run(interaction: BaseCommandInteraction) {
         const voiceChannel = member?.voice.channel;
         if (voiceChannel && guild) {
             if (guild.me?.voice.channel) {
-                interaction.reply({ content: `既に${voiceChannel.toString()} に参加しています。`, ephemeral: true });
+                interaction.reply(CommandReply.error(`既に${voiceChannel.toString()} に参加しています。`, true));
                 return;
             }
             if (!voiceChannel.joinable) {
-                interaction.reply({ content: 'ボイスチャンネルに接続できません。', ephemeral: true });
+                interaction.reply(CommandReply.error('ボイスチャンネルに接続できません。', true));
                 return;
             }
             joinVoiceChannel({
@@ -24,12 +25,12 @@ async function run(interaction: BaseCommandInteraction) {
                 guildId: guild.id,
                 adapterCreator: guild.voiceAdapterCreator,
             });
-            interaction.reply(`${voiceChannel.toString()} に参加しました。`);
+            interaction.reply(CommandReply.info(`${voiceChannel.toString()} に参加しました。`));
         } else {
-            interaction.reply({ content: 'Botを呼び出すにはボイスチャンネルに参加してください。', ephemeral: true });
+            interaction.reply(CommandReply.error('Botを呼び出すにはボイスチャンネルに参加してください。', true));
         }
     } else {
-        interaction.reply('このコマンドはサーバー専用です。');
+        interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
     }
 }
 
