@@ -30,7 +30,11 @@ client.once('ready', async () => {
 
 client.on('messageCreate', async (message) => {
     if (message.guild) {
-        if (sessionProvider.sessions.some((session) => session.textChannel.id === message.channelId)) {
+        if (
+            sessionProvider.sessions.some(
+                (session) => session.textChannel.id === message.channelId && !message.author.bot
+            )
+        ) {
             console.log(message.content);
         }
     }
@@ -38,11 +42,13 @@ client.on('messageCreate', async (message) => {
 
 client.on('voiceStateUpdate', async (_, newState) => {
     if (newState.guild.me?.voice.channel) {
-        if (!newState.channel?.members.some((member) => member.id !== client.user?.id && !member.user.bot)) {
-            console.log('Leaved All Members');
-            for (const session of sessionProvider.sessions) {
+        if (!newState.guild.me?.voice.channel.members.some((member) => !member.voice.mute && !member.user.bot)) {
+            console.log(`Leaved All Members: ${newState.guild.me.voice.channel.toString()}`);
+            for (let i = 0; i < sessionProvider.sessions.length; i++) {
+                let session = sessionProvider.sessions[i];
                 if (session.guild.id === newState.guild.id) {
                     session.textChannel.send(BotMessage.info(`${session.voiceChannel.toString()} から切断しました。`));
+                    sessionProvider.sessions.splice(i);
                 }
             }
             newState.guild.me?.voice.disconnect();
