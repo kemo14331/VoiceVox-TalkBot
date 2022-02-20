@@ -9,6 +9,7 @@ const data: ApplicationCommandData = {
             type: 'NUMBER',
             name: 'speaker',
             description: '音声モデル',
+            required: true,
             choices: [
                 { name: '四国めたん', value: 1 },
                 { name: 'ずんだもん', value: 2 },

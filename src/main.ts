@@ -1,14 +1,14 @@
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
-import commands from './commands';
 import { MainProvider } from './providers/MainProvider';
-import { TalkEngine } from './talkLib/talkEngine';
+import { TalkEngine } from './talkLib/TalkEngine';
 import { BotMessage } from './util/BotMessage';
+import { load_commands } from './util/CommandLoader';
 
 dotenv.config();
 
 // Providerの初期化
-let mainProvider: MainProvider = { sessions: [], engine: new TalkEngine() };
+let mainProvider: MainProvider = { sessions: [], engine: new TalkEngine(), commands: [] };
 
 const client = new Client({
     intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'],
@@ -16,8 +16,9 @@ const client = new Client({
 
 client.once('ready', async () => {
     const datas: Array<ApplicationCommandDataResolvable> = [];
-    for (const command of commands) {
-        datas.push((await command).data);
+    mainProvider.commands = await load_commands();
+    for (const command of mainProvider.commands) {
+        datas.push(command.data);
     }
     await client.application?.commands.set(datas, '851815435045568562');
     for (const guild of client.guilds.cache) {
@@ -65,9 +66,9 @@ client.on('interactionCreate', async (interaction) => {
         console.log(interaction.type);
         return;
     }
-    for (const command of commands) {
-        if ((await command).data.name == (interaction as CommandInteraction).commandName) {
-            await (await command).run(interaction as CommandInteraction, mainProvider);
+    for (const command of mainProvider.commands) {
+        if (command.data.name == (interaction as CommandInteraction).commandName) {
+            await command.run(interaction as CommandInteraction, mainProvider);
         }
     }
 });
