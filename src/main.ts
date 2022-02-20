@@ -46,7 +46,7 @@ client.on('messageCreate', async (message) => {
 
 client.on('voiceStateUpdate', async (_, newState) => {
     if (newState.guild.me?.voice.channel) {
-        if (!newState.guild.me?.voice.channel.members.some((member) => !member.voice.mute && !member.user.bot)) {
+        if (!newState.guild.me?.voice.channel.members.some((member) => !member.user.bot)) {
             console.log(`Leaved All Members: ${newState.guild.me.voice.channel.toString()}`);
             for (let i = 0; i < mainProvider.sessions.length; i++) {
                 let session = mainProvider.sessions[i];

@@ -10,40 +10,64 @@ export class TalkEngine {
     }
 
     async isReady(): Promise<boolean> {
-        let response = await this.rpc.get('version');
-        return response.status == 200;
+        try {
+            let response = await this.rpc.get('version');
+            return response.status == 200;
+        } catch {
+            return false;
+        }
     }
 
-    async getVersion(): Promise<string> {
-        let response = await this.rpc.get('version');
-        return response.data;
+    async getVersion(): Promise<string | null> {
+        try {
+            let response = await this.rpc.get('version');
+            if (response.status == 200) {
+                return response.data;
+            } else {
+                return null;
+            }
+        } catch {
+            return null;
+        }
     }
 
     async getSpeakers(): Promise<Speaker[] | null> {
-        let response: AxiosResponse<Speaker[]> = await this.rpc.get('speakers');
-        if (response.status == 200) {
-            return response.data;
-        } else {
+        try {
+            let response: AxiosResponse<Speaker[]> = await this.rpc.get('speakers');
+            if (response.status == 200) {
+                return response.data;
+            } else {
+                return null;
+            }
+        } catch {
             return null;
         }
     }
 
     async getSpeakerInfo(speaker_uuid: string): Promise<SpeakerInfo | null> {
-        let response: AxiosResponse<SpeakerInfo> = await this.rpc.get('speaker_info', {
-            params: { speaker_uuid: speaker_uuid },
-        });
-        if (response.status == 200) {
-            return response.data;
-        } else {
+        try {
+            let response: AxiosResponse<SpeakerInfo> = await this.rpc.get('speaker_info', {
+                params: { speaker_uuid: speaker_uuid },
+            });
+            if (response.status == 200) {
+                return response.data;
+            } else {
+                return null;
+            }
+        } catch {
             return null;
         }
     }
 
     async getPresets(): Promise<Preset[] | null> {
-        let response: AxiosResponse<Preset[]> = await this.rpc.get('presets');
-        if (response.status == 200) {
-            return response.data;
-        } else {
+        try {
+            let response: AxiosResponse<Preset[]> = await this.rpc.get('presets');
+            if (response.status == 200) {
+                return response.data;
+            } else {
+                return null;
+            }
+        } catch {
             return null;
         }
     }

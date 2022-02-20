@@ -8,11 +8,12 @@ const data: ApplicationCommandData = {
 };
 // eslint-disable-next-line no-unused-vars
 async function run(interaction: BaseCommandInteraction, mainProvider: MainProvider) {
+    await interaction.deferReply();
     const speakers = await mainProvider.engine.getSpeakers();
     let speakersEmbeds: MessageEmbed[] = [];
     let files = [];
     if (!speakers) {
-        interaction.reply(CommandReply.error('Speakerの取得に失敗しました。', true));
+        await interaction.followUp(CommandReply.error('Speakerの取得に失敗しました。', true));
         return;
     }
     for (const speaker of speakers) {
@@ -42,7 +43,7 @@ async function run(interaction: BaseCommandInteraction, mainProvider: MainProvid
         }
         speakersEmbeds.push(embed);
     }
-    interaction.reply({
+    await interaction.followUp({
         embeds: speakersEmbeds,
         files: files,
         ephemeral: true,
