@@ -14,6 +14,11 @@ client.once('ready', async () => {
         datas.push((await command).data);
     }
     await client.application?.commands.set(datas, '851815435045568562');
+    for (const guild of client.guilds.cache) {
+        if (guild[1].me?.voice.channel) {
+            guild[1].me.voice.disconnect();
+        }
+    }
     console.log('Ready');
     console.log(client.user?.tag);
 });
