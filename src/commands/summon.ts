@@ -1,7 +1,7 @@
 import { joinVoiceChannel } from '@discordjs/voice';
 import { ApplicationCommandDataResolvable, BaseCommandInteraction } from 'discord.js';
 import { SessionProvider } from '../providers/SessionProvider';
-import { CommandReply } from '../util.ts/CommandReply';
+import { CommandReply } from '../util/CommandReply';
 
 const data: ApplicationCommandDataResolvable = {
     name: 'summon',
@@ -24,7 +24,7 @@ async function run(interaction: BaseCommandInteraction, sessionProvider: Session
                 interaction.reply(CommandReply.error('ボイスチャンネルに接続できません。', true));
                 return;
             }
-            joinVoiceChannel({
+            let connection = joinVoiceChannel({
                 channelId: voiceChannel.id,
                 guildId: guild.id,
                 adapterCreator: guild.voiceAdapterCreator,
@@ -33,6 +33,7 @@ async function run(interaction: BaseCommandInteraction, sessionProvider: Session
                 guild: guild,
                 textChannel: interaction.channel,
                 voiceChannel: voiceChannel,
+                voiceConnection: connection,
             });
             interaction.reply(CommandReply.info(`${voiceChannel.toString()} に参加しました。`));
         } else {

@@ -2,7 +2,7 @@ import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'di
 import dotenv from 'dotenv';
 import commands from './commands';
 import { SessionProvider } from './providers/SessionProvider';
-import { BotMessage } from './util.ts/BotMessage';
+import { BotMessage } from './util/BotMessage';
 
 dotenv.config();
 
@@ -30,11 +30,11 @@ client.once('ready', async () => {
 
 client.on('messageCreate', async (message) => {
     if (message.guild) {
-        if (
-            sessionProvider.sessions.some(
-                (session) => session.textChannel.id === message.channelId && !message.author.bot
-            )
-        ) {
+        let session = sessionProvider.sessions.find(
+            (session) => session.textChannel.id === message.channelId && !message.author.bot
+        );
+        if (session) {
+            //session.voiceConnection.playOpusPacket();
             console.log(message.content);
         }
     }
