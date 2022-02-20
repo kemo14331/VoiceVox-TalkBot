@@ -69,7 +69,7 @@ type SpeakerInfo = {
     /** portrait.png with base64-encoding. */
     portrait: string;
     /** Additional information on style. */
-    style_infos: StyleInfo;
+    style_infos: StyleInfo[];
 };
 
 /**

@@ -2,16 +2,13 @@ import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'di
 import dotenv from 'dotenv';
 import commands from './commands';
 import { MainProvider } from './providers/MainProvider';
-//import { TalkEngine } from './talkLib/talkEngine';
+import { TalkEngine } from './talkLib/talkEngine';
 import { BotMessage } from './util/BotMessage';
 
 dotenv.config();
 
-// セッションの初期化
-let mainProvider: MainProvider = { sessions: [] };
-
-// eslint-disable-next-line no-unused-vars
-//const engine = new TalkEngine();
+// Providerの初期化
+let mainProvider: MainProvider = { sessions: [], engine: new TalkEngine() };
 
 const client = new Client({
     intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'],
@@ -28,9 +25,11 @@ client.once('ready', async () => {
             guild[1].me.voice.disconnect();
         }
     }
-    console.log('Ready');
-    console.log(`Login as ${client.user?.tag}`);
-    //console.log(await engine.getVersion());
+    console.log('Discord-Bot is Ready.');
+    console.log(`Login as ${client.user?.tag}.`);
+    if (await mainProvider.engine.isReady()) {
+        console.log(`VoiceVox-Engine is Ready: v${await mainProvider.engine.getVersion()}`);
+    }
 });
 
 client.on('messageCreate', async (message) => {
