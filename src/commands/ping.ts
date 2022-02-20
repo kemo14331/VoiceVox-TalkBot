@@ -1,13 +1,14 @@
-import { ApplicationCommandData, BaseCommandInteraction } from 'discord.js';
+import { BaseCommandInteraction } from 'discord.js';
 import { MainProvider } from '../providers/MainProvider';
+import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
 
-const data: ApplicationCommandData = {
-    name: 'ping',
-    description: 'pongを返す',
+export const command: ICOMMAND_OBJECT = {
+    data: {
+        name: 'ping',
+        description: 'pongを返す',
+    },
+    // eslint-disable-next-line no-unused-vars
+    run: (interaction: BaseCommandInteraction, mainProvider: MainProvider) => {
+        interaction.reply('pong!');
+    },
 };
-// eslint-disable-next-line no-unused-vars
-async function run(interaction: BaseCommandInteraction, mainProvider: MainProvider) {
-    interaction.reply('pong!');
-}
-
-export { data, run };

@@ -12,8 +12,12 @@ export async function load_commands(): Promise<ICOMMAND_OBJECT[]> {
                     return import(file.replace(__dirname, '.').replace('.ts', ''));
                 })
             ).then((modules) => {
-                console.log(`Loaded ${modules.length} commands.`);
-                resolve(modules);
+                let commands: ICOMMAND_OBJECT[] = [];
+                modules.map((module) => {
+                    commands.push(module.command);
+                });
+                console.log(`Loaded ${commands.length} commands.`);
+                resolve(commands);
             });
         });
     });
