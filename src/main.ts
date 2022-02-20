@@ -1,8 +1,13 @@
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import commands from './commands';
+import { SessionProvider } from './providers/SessionProvider';
+import { BotMessage } from './util.ts/BotMessage';
 
 dotenv.config();
+
+// セッションの初期化
+let sessionProvider: SessionProvider = { sessions: [] };
 
 const client = new Client({
     intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'],
@@ -20,15 +25,26 @@ client.once('ready', async () => {
         }
     }
     console.log('Ready');
-    console.log(client.user?.tag);
+    console.log(`Login as ${client.user?.tag}`);
 });
 
-//client.on('messageCreate', async (message: Message) => {});\\
+client.on('messageCreate', async (message) => {
+    if (message.guild) {
+        if (sessionProvider.sessions.some((session) => session.textChannel.id === message.channelId)) {
+            console.log(message.content);
+        }
+    }
+});
 
 client.on('voiceStateUpdate', async (_, newState) => {
     if (newState.guild.me?.voice.channel) {
         if (!newState.channel?.members.some((member) => member.id !== client.user?.id && !member.user.bot)) {
             console.log('Leaved All Members');
+            for (const session of sessionProvider.sessions) {
+                if (session.guild.id === newState.guild.id) {
+                    session.textChannel.send(BotMessage.info(`${session.voiceChannel.toString()} から切断しました。`));
+                }
+            }
             newState.guild.me?.voice.disconnect();
         }
     }
@@ -41,7 +57,7 @@ client.on('interactionCreate', async (interaction) => {
     }
     for (const command of commands) {
         if ((await command).data.name == (interaction as CommandInteraction).commandName) {
-            await (await command).run(interaction as CommandInteraction);
+            await (await command).run(interaction as CommandInteraction, sessionProvider);
         }
     }
 });
