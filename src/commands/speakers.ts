@@ -1,6 +1,5 @@
-import { BaseCommandInteraction, MessageAttachment, MessageEmbed } from 'discord.js';
-import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
-import { IMAIN_PROVIDER } from '../types/IMainProvider';
+import { MessageAttachment, MessageEmbed } from 'discord.js';
+import { CommandExecuteOption, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 import { CommandReply } from '../util/CommandReply';
 
 export const command: ICOMMAND_OBJECT = {
@@ -8,18 +7,17 @@ export const command: ICOMMAND_OBJECT = {
         name: 'speakers',
         description: '使用可能なSpeakerを表示する',
     },
-    // eslint-disable-next-line no-unused-vars
-    run: async (interaction: BaseCommandInteraction, mainProvider: IMAIN_PROVIDER) => {
-        await interaction.deferReply();
-        const speakers = await mainProvider.engine.getSpeakers();
+    execute: async (options: CommandExecuteOption) => {
+        await options.interaction.deferReply();
+        const speakers = await options.mainProvider.engine.getSpeakers();
         let speakersEmbeds: MessageEmbed[] = [];
         let files = [];
         if (!speakers) {
-            await interaction.followUp(CommandReply.error('Speakerの取得に失敗しました。', true));
+            await options.interaction.followUp(CommandReply.error('Speakerの取得に失敗しました。', true));
             return;
         }
         for (const speaker of speakers) {
-            const speaker_info = await mainProvider.engine.getSpeakerInfo(speaker.speaker_uuid);
+            const speaker_info = await options.mainProvider.engine.getSpeakerInfo(speaker.speaker_uuid);
             let embed = new MessageEmbed({
                 color: 'GREEN',
                 author: {
@@ -45,7 +43,7 @@ export const command: ICOMMAND_OBJECT = {
             }
             speakersEmbeds.push(embed);
         }
-        await interaction.followUp({
+        await options.interaction.followUp({
             embeds: speakersEmbeds,
             files: files,
             ephemeral: true,

@@ -1,6 +1,4 @@
-import { BaseCommandInteraction } from 'discord.js';
-import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
-import { IMAIN_PROVIDER } from '../types/IMainProvider';
+import { CommandExecuteOption, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 import { CommandReply } from '../util/CommandReply';
 
 export const command: ICOMMAND_OBJECT = {
@@ -9,18 +7,18 @@ export const command: ICOMMAND_OBJECT = {
         description: 'botをボイスチャンネルから退出させる',
     },
     // eslint-disable-next-line no-unused-vars
-    run: (interaction: BaseCommandInteraction, mainProvider: IMAIN_PROVIDER) => {
-        if (interaction.guild) {
-            if (interaction.guild.me?.voice.channel) {
-                interaction.guild.me?.voice.disconnect();
-                interaction.reply(
-                    CommandReply.info(`${interaction.guild.me.voice.channel.toString()} から切断しました。`)
+    execute: (options: CommandExecuteOption) => {
+        if (options.interaction.guild) {
+            if (options.interaction.guild.me?.voice.channel) {
+                options.interaction.guild.me?.voice.disconnect();
+                options.interaction.reply(
+                    CommandReply.info(`${options.interaction.guild.me.voice.channel.toString()} から切断しました。`)
                 );
             } else {
-                interaction.reply(CommandReply.error('ボイスチャンネルに接続していません。', true));
+                options.interaction.reply(CommandReply.error('ボイスチャンネルに接続していません。', true));
             }
         } else {
-            interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
+            options.interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
         }
     },
 };

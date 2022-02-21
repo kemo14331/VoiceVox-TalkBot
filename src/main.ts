@@ -91,7 +91,7 @@ client.on('interactionCreate', async (interaction) => {
     }
     for (const command of mainProvider.commands) {
         if (command.data.name == (interaction as CommandInteraction).commandName) {
-            await command.run(interaction as CommandInteraction, mainProvider);
+            await command.execute({ interaction: interaction as CommandInteraction, mainProvider: mainProvider });
         }
     }
 });
