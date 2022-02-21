@@ -25,7 +25,7 @@ export type SynthesisOption = {
     enable_interrogative_upspeak?: boolean;
 };
 
-export class TalkEngine {
+export class VoiceVoxEngine {
     async isReady(): Promise<boolean> {
         try {
             const response = await rpc.get('version');

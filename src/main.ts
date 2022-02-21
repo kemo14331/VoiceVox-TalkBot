@@ -2,7 +2,7 @@ import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@d
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import Datastore from 'nedb';
-import { TalkEngine } from './talkLib/TalkEngine';
+import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
 import { IMAIN_PROVIDER } from './types/IMainProvider';
 import { BotMessage } from './util/BotMessage';
 import { load_commands } from './util/CommandLoader';
@@ -25,7 +25,7 @@ const client = new Client({
 });
 
 client.once('ready', async () => {
-    const talkEngine = new TalkEngine();
+    const voiceVoxEngine = new VoiceVoxEngine();
     const datas: Array<ApplicationCommandDataResolvable> = [];
     mainProvider.commands = await load_commands();
     for (const command of mainProvider.commands) {
@@ -38,8 +38,8 @@ client.once('ready', async () => {
         }
     }
     console.log(`Logged in as ${client.user?.tag}.`);
-    if (await talkEngine.isReady()) {
-        console.log(`VoiceVox-Engine is Ready: v${await talkEngine.getVersion()}`);
+    if (await voiceVoxEngine.isReady()) {
+        console.log(`VoiceVox-Engine is Ready: v${await voiceVoxEngine.getVersion()}`);
     }
 });
 
@@ -49,7 +49,7 @@ client.on('messageCreate', async (message) => {
             (session) => session.textChannel.id === message.channelId && !message.author.bot
         );
         if (session) {
-            const talkEngine = new TalkEngine();
+            const talkEngine = new VoiceVoxEngine();
             const query = await talkEngine.getAudioQuery({ text: message.content, speaker: 1 });
             if (query) {
                 const buffer = await talkEngine.Synthesis({ query: query, speaker: 1 });

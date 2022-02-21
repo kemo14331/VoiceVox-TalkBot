@@ -1,5 +1,5 @@
 import { MessageAttachment, MessageEmbed } from 'discord.js';
-import { TalkEngine } from '../talkLib/TalkEngine';
+import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
 import { CommandExecuteOption, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 import { CommandReply } from '../util/CommandReply';
 
@@ -9,17 +9,17 @@ export const command: ICOMMAND_OBJECT = {
         description: '使用可能なSpeakerを表示する',
     },
     execute: async (options: CommandExecuteOption) => {
-        const talkEngine = new TalkEngine();
+        const voiceVoxEngine = new VoiceVoxEngine();
         await options.interaction.deferReply();
         const speakersEmbeds: MessageEmbed[] = [];
         const files = [];
-        const speakers = await talkEngine.getSpeakers();
+        const speakers = await voiceVoxEngine.getSpeakers();
         if (!speakers) {
             await options.interaction.followUp(CommandReply.error('Speakerの取得に失敗しました。', true));
             return;
         }
         for (const speaker of speakers) {
-            const speaker_info = await talkEngine.getSpeakerInfo({ speaker_uuid: speaker.speaker_uuid });
+            const speaker_info = await voiceVoxEngine.getSpeakerInfo({ speaker_uuid: speaker.speaker_uuid });
             const embed = new MessageEmbed({
                 color: 'GREEN',
                 author: {
