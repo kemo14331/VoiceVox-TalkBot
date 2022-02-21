@@ -36,6 +36,7 @@ export const command: ICOMMAND_OBJECT = {
                     textChannel: options.interaction.channel,
                     voiceChannel: voiceChannel,
                     voiceConnection: connection,
+                    settings: { guildid: guild.id, users: [] },
                 });
                 options.interaction.reply(CommandReply.info(`${voiceChannel.toString()} に参加しました。`));
             } else {

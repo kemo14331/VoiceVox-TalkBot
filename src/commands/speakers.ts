@@ -35,6 +35,11 @@ export const command: ICOMMAND_OBJECT = {
                     iconURL: `attachment://icon_${speaker.speaker_uuid}.png`,
                 });
                 embed.addField('UUID', speaker.speaker_uuid);
+                let styleIdText = '';
+                for (const style of speaker.styles) {
+                    styleIdText += `${style.name}: ${style.id}\n`;
+                }
+                embed.addField('Styles', styleIdText);
                 if (speaker.version) {
                     embed.addField('Version', speaker.version);
                 } else {
