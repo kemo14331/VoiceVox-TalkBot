@@ -6,7 +6,6 @@ export const command: ICOMMAND_OBJECT = {
         name: 'leave',
         description: 'botをボイスチャンネルから退出させる',
     },
-    // eslint-disable-next-line no-unused-vars
     execute: (options: CommandExecuteOption) => {
         if (options.interaction.guild) {
             if (options.interaction.guild.me?.voice.channel) {

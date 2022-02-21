@@ -37,8 +37,7 @@ client.once('ready', async () => {
             guild[1].me.voice.disconnect();
         }
     }
-    console.log('Discord-Bot is Ready.');
-    console.log(`Login as ${client.user?.tag}.`);
+    console.log(`Logged in as ${client.user?.tag}.`);
     if (await mainProvider.engine.isReady()) {
         console.log(`VoiceVox-Engine is Ready: v${await mainProvider.engine.getVersion()}`);
     }
