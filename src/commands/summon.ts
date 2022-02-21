@@ -1,5 +1,5 @@
 import { joinVoiceChannel } from '@discordjs/voice';
-import { CommandExecuteOption, ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { CommandExecuteOptions, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 import { CommandReply } from '../util/CommandReply';
 
 export const command: ICOMMAND_OBJECT = {
@@ -7,7 +7,7 @@ export const command: ICOMMAND_OBJECT = {
         name: 'summon',
         description: 'Botをボイスチャンネルに呼び出す',
     },
-    execute: async (options: CommandExecuteOption) => {
+    execute: async (options: CommandExecuteOptions) => {
         if (options.interaction.guildId && options.interaction.member) {
             const guild = options.interaction.client.guilds.cache.get(options.interaction.guildId);
             const member = guild?.members.cache.get(options.interaction.member.user.id);

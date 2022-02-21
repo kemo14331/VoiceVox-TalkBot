@@ -5,21 +5,21 @@ const serverURL = 'http://localhost:50021';
 
 const rpc = axios.create({ baseURL: serverURL, proxy: false });
 
-export type GetSpeakerInfoOption = {
+export type GetSpeakerInfoOptions = {
     speaker_uuid: string;
 };
 
-export type AudioQueryOption = {
+export type GetAudioQueryOptions = {
     text: string;
     speaker: number;
 };
 
-export type AudioQueryFromPresetOption = {
+export type GetAudioQueryFromPresetOptions = {
     text: string;
     preset_id: number;
 };
 
-export type SynthesisOption = {
+export type SynthesisOptions = {
     query: AudioQuery;
     speaker: number;
     enable_interrogative_upspeak?: boolean;
@@ -61,7 +61,7 @@ export class VoiceVoxEngine {
         }
     }
 
-    async getSpeakerInfo(options: GetSpeakerInfoOption): Promise<SpeakerInfo | null> {
+    async getSpeakerInfo(options: GetSpeakerInfoOptions): Promise<SpeakerInfo | null> {
         try {
             const response: AxiosResponse<SpeakerInfo> = await rpc.get('speaker_info', {
                 params: { speaker_uuid: options.speaker_uuid },
@@ -89,7 +89,7 @@ export class VoiceVoxEngine {
         }
     }
 
-    async getAudioQuery(options: AudioQueryOption): Promise<AudioQuery | null> {
+    async getAudioQuery(options: GetAudioQueryOptions): Promise<AudioQuery | null> {
         try {
             const response = await rpc.post(`/audio_query?text=${encodeURI(options.text)}&speaker=${options.speaker}`);
             if (response.status == 200) {
@@ -102,7 +102,7 @@ export class VoiceVoxEngine {
         }
     }
 
-    async getAudioQueryFromPreset(options: AudioQueryFromPresetOption): Promise<AudioQuery | null> {
+    async getAudioQueryFromPreset(options: GetAudioQueryFromPresetOptions): Promise<AudioQuery | null> {
         try {
             const response = await rpc.post(
                 `/audio_query_from_preset?text=${encodeURI(options.text)}&preset_id=${options.preset_id}`
@@ -117,7 +117,7 @@ export class VoiceVoxEngine {
         }
     }
 
-    async Synthesis(options: SynthesisOption): Promise<Buffer | null> {
+    async Synthesis(options: SynthesisOptions): Promise<Buffer | null> {
         try {
             if (!options.enable_interrogative_upspeak) options.enable_interrogative_upspeak = true;
             const response = await rpc.post(

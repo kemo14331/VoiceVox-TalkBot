@@ -1,4 +1,4 @@
-import { CommandExecuteOption, ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { CommandExecuteOptions, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 
 export const command: ICOMMAND_OBJECT = {
     data: {
@@ -18,10 +18,23 @@ export const command: ICOMMAND_OBJECT = {
                     { name: '波音リツ', value: 5 },
                 ],
             },
+            {
+                type: 'NUMBER',
+                name: 'style',
+                description: 'スタイル',
+                required: false,
+                choices: [
+                    { name: 'ノーマル', value: 1 },
+                    { name: 'あまあま', value: 2 },
+                    { name: 'ツンツン', value: 3 },
+                    { name: 'セクシー', value: 4 },
+                ],
+            },
         ],
     },
 
-    execute: (options: CommandExecuteOption) => {
+    execute: (options: CommandExecuteOptions) => {
         options.interaction.reply('pong!');
+        //new MessageButton({})
     },
 };

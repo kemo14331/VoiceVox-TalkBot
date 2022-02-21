@@ -1,6 +1,6 @@
 import { MessageAttachment, MessageEmbed } from 'discord.js';
 import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
-import { CommandExecuteOption, ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { CommandExecuteOptions, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 import { CommandReply } from '../util/CommandReply';
 
 export const command: ICOMMAND_OBJECT = {
@@ -8,7 +8,7 @@ export const command: ICOMMAND_OBJECT = {
         name: 'speakers',
         description: '使用可能なSpeakerを表示する',
     },
-    execute: async (options: CommandExecuteOption) => {
+    execute: async (options: CommandExecuteOptions) => {
         const voiceVoxEngine = new VoiceVoxEngine();
         await options.interaction.deferReply();
         const speakersEmbeds: MessageEmbed[] = [];
