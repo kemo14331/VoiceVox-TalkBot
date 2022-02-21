@@ -13,7 +13,6 @@ dotenv.config();
 // Providerの初期化
 const mainProvider: IMAIN_PROVIDER = {
     sessions: [],
-    engine: new TalkEngine(),
     commands: [],
     userDB: new Datastore({
         filename: `${process.cwd()}/database/userdb.db`,
@@ -26,6 +25,7 @@ const client = new Client({
 });
 
 client.once('ready', async () => {
+    const talkEngine = new TalkEngine();
     const datas: Array<ApplicationCommandDataResolvable> = [];
     mainProvider.commands = await load_commands();
     for (const command of mainProvider.commands) {
@@ -38,8 +38,8 @@ client.once('ready', async () => {
         }
     }
     console.log(`Logged in as ${client.user?.tag}.`);
-    if (await mainProvider.engine.isReady()) {
-        console.log(`VoiceVox-Engine is Ready: v${await mainProvider.engine.getVersion()}`);
+    if (await talkEngine.isReady()) {
+        console.log(`VoiceVox-Engine is Ready: v${await talkEngine.getVersion()}`);
     }
 });
 
@@ -49,9 +49,10 @@ client.on('messageCreate', async (message) => {
             (session) => session.textChannel.id === message.channelId && !message.author.bot
         );
         if (session) {
-            const query = await mainProvider.engine.getAudioQuery(message.content, 1);
+            const talkEngine = new TalkEngine();
+            const query = await talkEngine.getAudioQuery({ text: message.content, speaker: 1 });
             if (query) {
-                const buffer = await mainProvider.engine.Synthesis(query, 1);
+                const buffer = await talkEngine.Synthesis({ query: query, speaker: 1 });
                 if (buffer) {
                     const player = createAudioPlayer({
                         behaviors: {
