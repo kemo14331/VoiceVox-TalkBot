@@ -1,14 +1,25 @@
+import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@discordjs/voice';
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
+import Datastore from 'nedb';
 import { MainProvider } from './providers/MainProvider';
 import { TalkEngine } from './talkLib/TalkEngine';
 import { BotMessage } from './util/BotMessage';
 import { load_commands } from './util/CommandLoader';
+import { bufferToStream } from './util/StreamUtil';
 
 dotenv.config();
 
 // Providerの初期化
-let mainProvider: MainProvider = { sessions: [], engine: new TalkEngine(), commands: [] };
+const mainProvider: MainProvider = {
+    sessions: [],
+    engine: new TalkEngine(),
+    commands: [],
+    userDB: new Datastore({
+        filename: `${process.cwd()}/database/userdb.db`,
+        autoload: true,
+    }),
+};
 
 const client = new Client({
     intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'],
@@ -35,11 +46,24 @@ client.once('ready', async () => {
 
 client.on('messageCreate', async (message) => {
     if (message.guild) {
-        let session = mainProvider.sessions.find(
+        const session = mainProvider.sessions.find(
             (session) => session.textChannel.id === message.channelId && !message.author.bot
         );
         if (session) {
-            //session.voiceConnection.playOpusPacket();
+            const query = await mainProvider.engine.getAudioQuery(message.content, 1);
+            if (query) {
+                const buffer = await mainProvider.engine.Synthesis(query, 1);
+                if (buffer) {
+                    const player = createAudioPlayer({
+                        behaviors: {
+                            noSubscriber: NoSubscriberBehavior.Pause,
+                        },
+                    });
+                    const resource = createAudioResource(bufferToStream(buffer));
+                    player.play(resource);
+                    session.voiceConnection.subscribe(player);
+                }
+            }
             console.log(message.content);
         }
     }

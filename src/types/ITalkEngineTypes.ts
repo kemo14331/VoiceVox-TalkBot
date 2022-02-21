@@ -107,7 +107,7 @@ type AccentPhrase = {
 /**
  * Query for speech synthesis.
  */
-type SynthesisQuery = {
+type AudioQuery = {
     /** Array of AccentPhrase. */
     accent_phrases: AccentPhrase[];
     /** Speed of speech. */
@@ -130,4 +130,4 @@ type SynthesisQuery = {
     kana: string;
 };
 
-export { Preset, SpeakerStyle, Speaker, StyleInfo, SpeakerInfo, Mora, AccentPhrase, SynthesisQuery };
+export { Preset, SpeakerStyle, Speaker, StyleInfo, SpeakerInfo, Mora, AccentPhrase, AudioQuery };
