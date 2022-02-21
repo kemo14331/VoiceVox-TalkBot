@@ -1,6 +1,6 @@
 import { BaseCommandInteraction, MessageAttachment, MessageEmbed } from 'discord.js';
-import { MainProvider } from '../providers/MainProvider';
 import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { IMAIN_PROVIDER } from '../types/IMainProvider';
 import { CommandReply } from '../util/CommandReply';
 
 export const command: ICOMMAND_OBJECT = {
@@ -9,7 +9,7 @@ export const command: ICOMMAND_OBJECT = {
         description: '使用可能なSpeakerを表示する',
     },
     // eslint-disable-next-line no-unused-vars
-    run: async (interaction: BaseCommandInteraction, mainProvider: MainProvider) => {
+    run: async (interaction: BaseCommandInteraction, mainProvider: IMAIN_PROVIDER) => {
         await interaction.deferReply();
         const speakers = await mainProvider.engine.getSpeakers();
         let speakersEmbeds: MessageEmbed[] = [];

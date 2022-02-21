@@ -1,7 +1,7 @@
 import { joinVoiceChannel } from '@discordjs/voice';
 import { BaseCommandInteraction } from 'discord.js';
-import { MainProvider } from '../providers/MainProvider';
 import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { IMAIN_PROVIDER } from '../types/IMainProvider';
 import { CommandReply } from '../util/CommandReply';
 
 export const command: ICOMMAND_OBJECT = {
@@ -9,7 +9,7 @@ export const command: ICOMMAND_OBJECT = {
         name: 'summon',
         description: 'Botをボイスチャンネルに呼び出す',
     },
-    run: async (interaction: BaseCommandInteraction, mainProvider: MainProvider) => {
+    run: async (interaction: BaseCommandInteraction, mainProvider: IMAIN_PROVIDER) => {
         if (interaction.guildId && interaction.member) {
             const guild = interaction.client.guilds.cache.get(interaction.guildId);
             const member = guild?.members.cache.get(interaction.member.user.id);

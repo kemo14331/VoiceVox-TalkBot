@@ -2,8 +2,8 @@ import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@d
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import Datastore from 'nedb';
-import { MainProvider } from './providers/MainProvider';
 import { TalkEngine } from './talkLib/TalkEngine';
+import { IMAIN_PROVIDER } from './types/IMainProvider';
 import { BotMessage } from './util/BotMessage';
 import { load_commands } from './util/CommandLoader';
 import { bufferToStream } from './util/StreamUtil';
@@ -11,7 +11,7 @@ import { bufferToStream } from './util/StreamUtil';
 dotenv.config();
 
 // Providerの初期化
-const mainProvider: MainProvider = {
+const mainProvider: IMAIN_PROVIDER = {
     sessions: [],
     engine: new TalkEngine(),
     commands: [],
@@ -64,7 +64,6 @@ client.on('messageCreate', async (message) => {
                     session.voiceConnection.subscribe(player);
                 }
             }
-            console.log(message.content);
         }
     }
 });

@@ -1,6 +1,6 @@
 import { BaseCommandInteraction } from 'discord.js';
-import { MainProvider } from '../providers/MainProvider';
 import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { IMAIN_PROVIDER } from '../types/IMainProvider';
 
 export const command: ICOMMAND_OBJECT = {
     data: {
@@ -24,7 +24,7 @@ export const command: ICOMMAND_OBJECT = {
     },
 
     // eslint-disable-next-line no-unused-vars
-    run: (interaction: BaseCommandInteraction, mainProvider: MainProvider) => {
+    run: (interaction: BaseCommandInteraction, mainProvider: IMAIN_PROVIDER) => {
         interaction.reply('pong!');
     },
 };
