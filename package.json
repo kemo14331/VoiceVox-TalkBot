@@ -40,7 +40,6 @@
         "fs": "^0.0.1-security",
         "glob": "^7.2.0",
         "libsodium-wrappers": "^0.7.9",
-        "nedb": "^1.8.0",
         "nodemon": "^2.0.15",
         "prettier-eslint": "^8.2.2",
         "wavefile": "^11.0.0"

@@ -1,7 +1,6 @@
 import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@discordjs/voice';
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
-import Datastore from 'nedb';
 import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
 import { IMAIN_PROVIDER } from './types/IMainProvider';
 import { BotMessage } from './util/BotMessage';
@@ -14,10 +13,6 @@ dotenv.config();
 const mainProvider: IMAIN_PROVIDER = {
     sessions: [],
     commands: [],
-    userDB: new Datastore({
-        filename: `${process.cwd()}/database/userdb.db`,
-        autoload: true,
-    }),
 };
 
 const client = new Client({

@@ -1,5 +1,5 @@
 import { ApplicationCommandData, BaseCommandInteraction } from 'discord.js';
-import { IMAIN_PROVIDER } from '../types/IMainProvider';
+import { IMAIN_PROVIDER } from './IMainProvider';
 
 type CommandExecuteOptions = { interaction: BaseCommandInteraction; mainProvider: IMAIN_PROVIDER };
 
