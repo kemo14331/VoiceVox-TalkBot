@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { AudioQuery, Preset, Speaker, SpeakerInfo } from '../types/ITalkEngineTypes';
+import { AudioQuery, Preset, Speaker, SpeakerInfo } from '../types/IVoiceVoxEngineTypes';
 
 const serverURL = 'http://localhost:50021';
 
