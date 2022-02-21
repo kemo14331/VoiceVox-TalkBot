@@ -11,8 +11,8 @@ export const command: ICOMMAND_OBJECT = {
     execute: async (options: CommandExecuteOption) => {
         const talkEngine = new TalkEngine();
         await options.interaction.deferReply();
-        let speakersEmbeds: MessageEmbed[] = [];
-        let files = [];
+        const speakersEmbeds: MessageEmbed[] = [];
+        const files = [];
         const speakers = await talkEngine.getSpeakers();
         if (!speakers) {
             await options.interaction.followUp(CommandReply.error('Speakerの取得に失敗しました。', true));
@@ -20,7 +20,7 @@ export const command: ICOMMAND_OBJECT = {
         }
         for (const speaker of speakers) {
             const speaker_info = await talkEngine.getSpeakerInfo({ speaker_uuid: speaker.speaker_uuid });
-            let embed = new MessageEmbed({
+            const embed = new MessageEmbed({
                 color: 'GREEN',
                 author: {
                     name: speaker.name,
