@@ -5,9 +5,12 @@ import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
 import { MainProvider } from './types/MainProvider';
 import { BotMessage } from './util/BotMessage';
 import { loadCommands, registerCommands } from './util/CommandRegister';
+import { Logger } from './util/Logger';
 import { bufferToStream } from './util/StreamUtil';
 
 dotenv.config();
+
+Logger.initialize();
 
 // Providerの初期化
 const mainProvider: MainProvider = {
@@ -22,6 +25,7 @@ const client = new Client({
 client.once('ready', async () => {
     const voiceVoxEngine = new VoiceVoxEngine();
     mainProvider.commands = await loadCommands();
+    Logger.info(`Loaded ${mainProvider.commands.length} commands.`);
     const datas: Array<ApplicationCommandDataResolvable> = mainProvider.commands.map((command) => command.data);
     await registerCommands({ client: client, datas: datas, guildId: '851815435045568562' });
     for (const guild of client.guilds.cache) {
@@ -29,9 +33,11 @@ client.once('ready', async () => {
             guild[1].me.voice.disconnect();
         }
     }
-    console.log(`Logged in as ${client.user?.tag}.`);
+    Logger.info(`Logged in as ${client.user?.tag}.`);
     if (await voiceVoxEngine.isReady()) {
-        console.log(`VoiceVox-Engine is Ready: v${await voiceVoxEngine.getVersion()}`);
+        Logger.info(`VoiceVox-Engine is ready: v${await voiceVoxEngine.getVersion()}`);
+    } else {
+        Logger.warn('VoiceVox-Engine is not ready.');
     }
 });
 

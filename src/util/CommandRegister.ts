@@ -1,6 +1,7 @@
 import { ApplicationCommandData, ApplicationCommandDataResolvable, Client } from 'discord.js';
 import glob from 'glob';
 import { CommandObject } from '../types/CommandTypes';
+import { Logger } from './Logger';
 
 /**
  * commands内のコマンドをロードする
@@ -15,12 +16,16 @@ export async function loadCommands(): Promise<CommandObject[]> {
             }
             Promise.all(
                 res.map(async (file) => {
-                    const func = require(file.replace(__dirname, '.').replace('.ts', ''));
-                    return (await func()) as CommandObject;
+                    try {
+                        const func = require(file.replace(__dirname, '.').replace('.ts', ''));
+                        return (await func()) as CommandObject;
+                    } catch (e) {
+                        Logger.error(`Faild to load command: ${file}`);
+                        Logger.trace(String(e));
+                    }
                 })
             ).then(async (commands) => {
-                console.log(`Loaded ${commands.length} commands.`);
-                resolve(commands);
+                resolve(commands.filter((command) => command) as CommandObject[]);
             });
         });
     });
