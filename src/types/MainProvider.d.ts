@@ -1,7 +1,7 @@
+import { SessionManager } from '../util/SessionManager';
 import { CommandObject } from './CommandTypes';
-import { Session } from './SettionTypes';
 
 export type MainProvider = {
-    sessions: Session[];
+    sessionManager: SessionManager;
     commands: CommandObject[];
 };

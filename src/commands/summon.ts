@@ -32,7 +32,7 @@ module.exports = async (): Promise<CommandObject> => {
                         guildId: guild.id,
                         adapterCreator: guild.voiceAdapterCreator,
                     });
-                    options.mainProvider.sessions.push({
+                    options.mainProvider.sessionManager.register({
                         guild: guild,
                         textChannel: options.interaction.channel,
                         voiceChannel: voiceChannel,

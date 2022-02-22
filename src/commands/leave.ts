@@ -1,5 +1,6 @@
 import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
 import { CommandReply } from '../util/CommandReply';
+import { Logger } from '../util/Logger';
 
 module.exports = async (): Promise<CommandObject> => {
     return {
@@ -10,10 +11,19 @@ module.exports = async (): Promise<CommandObject> => {
         execute: (options: CommandExecuteOptions) => {
             if (options.interaction.guild) {
                 if (options.interaction.guild.me?.voice.channel) {
-                    options.interaction.guild.me?.voice.disconnect();
-                    options.interaction.reply(
-                        CommandReply.info(`${options.interaction.guild.me.voice.channel.toString()} から切断しました。`)
+                    const session = options.mainProvider.sessionManager.sessions.find(
+                        (session) => session.guild.id === options.interaction.guild?.id
                     );
+                    if (session) {
+                        options.mainProvider.sessionManager.delete(session);
+                        options.interaction.reply(
+                            CommandReply.info(
+                                `${options.interaction.guild.me.voice.channel.toString()} から切断しました。`
+                            )
+                        );
+                    } else {
+                        Logger.warn('An unknown session was detected.');
+                    }
                 } else {
                     options.interaction.reply(CommandReply.error('ボイスチャンネルに接続していません。', true));
                 }

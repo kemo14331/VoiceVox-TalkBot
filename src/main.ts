@@ -6,6 +6,7 @@ import { MainProvider } from './types/MainProvider';
 import { BotMessage } from './util/BotMessage';
 import { loadCommands, registerCommands } from './util/CommandRegister';
 import { Logger } from './util/Logger';
+import { SessionManager } from './util/SessionManager';
 import { bufferToStream } from './util/StreamUtil';
 
 dotenv.config();
@@ -14,7 +15,7 @@ Logger.initialize();
 
 // Providerの初期化
 const mainProvider: MainProvider = {
-    sessions: [],
+    sessionManager: new SessionManager(),
     commands: [],
 };
 
@@ -42,7 +43,7 @@ client.once('ready', async () => {
 
 client.on('messageCreate', async (message) => {
     if (message.guild) {
-        const session = mainProvider.sessions.find(
+        const session = mainProvider.sessionManager.sessions.find(
             (session) => session.textChannel.id === message.channelId && !message.author.bot
         );
         if (session) {
@@ -68,14 +69,13 @@ client.on('voiceStateUpdate', async (_, newState) => {
     if (newState.guild.me?.voice.channel) {
         if (!newState.guild.me?.voice.channel.members.some((member) => !member.user.bot)) {
             console.log(`Leaved All Members: ${newState.guild.me.voice.channel.toString()}`);
-            for (let i = 0; i < mainProvider.sessions.length; i++) {
-                const session = mainProvider.sessions[i];
-                if (session.guild.id === newState.guild.id) {
-                    session.textChannel.send(BotMessage.info(`${session.voiceChannel.toString()} から切断しました。`));
-                    mainProvider.sessions.splice(i);
-                }
+            const session = mainProvider.sessionManager.sessions.find(
+                (session) => session.guild.id === newState.guild.id
+            );
+            if (session) {
+                mainProvider.sessionManager.delete(session);
+                session.textChannel.send(BotMessage.info(`${session.voiceChannel.toString()} から切断しました。`));
             }
-            newState.guild.me?.voice.disconnect();
         }
     }
 });
