@@ -1,11 +1,14 @@
 import {
     ApplicationCommandOptionChoice,
     CommandInteractionOptionResolver,
+    MessageActionRow,
     MessageAttachment,
     MessageEmbed,
+    MessageSelectMenu,
 } from 'discord.js';
 import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
 import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
+import { BotMessage } from '../util/BotMessage';
 import { CommandReply } from '../util/CommandReply';
 
 /**
@@ -55,7 +58,6 @@ module.exports = async (): Promise<CommandObject> => {
                     const speakersEmbeds: MessageEmbed[] = [];
                     const files = [];
                     const speakers = await VoiceVoxEngine.getSpeakers();
-                    await options.interaction.deferReply({ ephemeral: true });
                     if (!speakers) {
                         await options.interaction.followUp(CommandReply.error('Speakerの取得に失敗しました。', true));
                         return;
@@ -92,7 +94,7 @@ module.exports = async (): Promise<CommandObject> => {
                         }
                         speakersEmbeds.push(embed);
                     }
-                    await options.interaction.followUp({
+                    await options.interaction.reply({
                         embeds: speakersEmbeds,
                         files: files,
                         ephemeral: true,
@@ -100,7 +102,34 @@ module.exports = async (): Promise<CommandObject> => {
                     break;
                 }
                 case 'set': {
-                    options.interaction.reply({ content: '音声モデルを選択してください' });
+                    const speakerUuid = (options.interaction.options as CommandInteractionOptionResolver).getString(
+                        'speaker',
+                        true
+                    );
+                    const speakers = await VoiceVoxEngine.getSpeakers();
+                    if (speakers) {
+                        const speaker = speakers.find((speaker) => speaker.speaker_uuid === speakerUuid);
+                        if (speaker) {
+                            const row = new MessageActionRow({
+                                components: [
+                                    new MessageSelectMenu({
+                                        custom_id: 'selectStyle',
+                                        placeholder: '選択してください',
+                                        options: speaker.styles.map((style) => {
+                                            return { label: style.name, value: String(style.id) };
+                                        }),
+                                    }),
+                                ],
+                            });
+                            options.interaction.reply({
+                                embeds: BotMessage.info(`${speaker.name} のスタイルを選択してください`).embeds,
+                                components: [row],
+                                ephemeral: true,
+                            });
+                            break;
+                        }
+                    }
+                    options.interaction.reply(CommandReply.error('情報の取得に失敗しました。', true));
                     break;
                 }
             }
