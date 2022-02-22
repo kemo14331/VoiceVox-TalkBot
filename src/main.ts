@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
 import { IMAIN_PROVIDER } from './types/IMainProvider';
 import { BotMessage } from './util/BotMessage';
-import { load_commands } from './util/CommandRegister';
+import { load_commands, register_commands } from './util/CommandRegister';
 import { bufferToStream } from './util/StreamUtil';
 
 dotenv.config();
@@ -21,12 +21,9 @@ const client = new Client({
 
 client.once('ready', async () => {
     const voiceVoxEngine = new VoiceVoxEngine();
-    const datas: Array<ApplicationCommandDataResolvable> = [];
     mainProvider.commands = await load_commands();
-    for (const command of mainProvider.commands) {
-        datas.push(command.data);
-    }
-    await client.application?.commands.set(datas, '851815435045568562');
+    const datas: Array<ApplicationCommandDataResolvable> = mainProvider.commands.map((command) => command.data);
+    await register_commands({ client: client, datas: datas, guildId: '851815435045568562' });
     for (const guild of client.guilds.cache) {
         if (guild[1].me?.voice.channel) {
             guild[1].me.voice.disconnect();

@@ -1,11 +1,13 @@
 import { CommandExecuteOptions, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 
-export const command: ICOMMAND_OBJECT = {
-    data: {
-        name: 'ping',
-        description: 'pongを返す',
-    },
-    execute: (options: CommandExecuteOptions) => {
-        options.interaction.reply('pong!');
-    },
+module.exports = async (): Promise<ICOMMAND_OBJECT> => {
+    return {
+        data: {
+            name: 'ping',
+            description: 'pongを返す',
+        },
+        execute: (options: CommandExecuteOptions) => {
+            options.interaction.reply('pong!');
+        },
+    };
 };
