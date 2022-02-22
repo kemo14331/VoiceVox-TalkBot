@@ -21,7 +21,7 @@ async function genSpeakerChoices(): Promise<ApplicationCommandOptionChoice[]> {
             return { name: speaker.name, value: speaker.speaker_uuid };
         });
     }
-    return [];
+    return [{ name: '利用可能なモデルはありません', value: 'null' }];
 }
 
 module.exports = async (): Promise<CommandObject> => {
@@ -54,6 +54,7 @@ module.exports = async (): Promise<CommandObject> => {
         execute: async (options: CommandExecuteOptions) => {
             switch ((options.interaction.options as CommandInteractionOptionResolver).getSubcommand(true)) {
                 case 'list': {
+                    options.interaction.deferReply({ ephemeral: true });
                     const speakersEmbeds: MessageEmbed[] = [];
                     const files = [];
                     const speakers = await VoiceVoxEngine.getSpeakers();
@@ -93,7 +94,7 @@ module.exports = async (): Promise<CommandObject> => {
                         }
                         speakersEmbeds.push(embed);
                     }
-                    await options.interaction.reply({
+                    await options.interaction.followUp({
                         embeds: speakersEmbeds,
                         files: files,
                         ephemeral: true,
@@ -105,6 +106,12 @@ module.exports = async (): Promise<CommandObject> => {
                         'speaker',
                         true
                     );
+                    if (speakerUuid === 'null') {
+                        options.interaction.reply(
+                            CommandReply.error('Botのリロードが必要です。\n管理者にお問い合わせ下さい。')
+                        );
+                        return;
+                    }
                     options.interaction.reply({
                         embeds: BotMessage.info(`スタイルを選択してください。`).embeds,
                         components: [await SelectStyleComponent.view({ speakerUuid: speakerUuid })],
