@@ -1,14 +1,14 @@
 import { ApplicationCommandData, BaseCommandInteraction } from 'discord.js';
-import { IMAIN_PROVIDER } from './IMainProvider';
+import { MainProvider } from './MainProvider';
 
-type CommandExecuteOptions = { interaction: BaseCommandInteraction; mainProvider: IMAIN_PROVIDER };
+type CommandExecuteOptions = { interaction: BaseCommandInteraction; mainProvider: MainProvider };
 
 // eslint-disable-next-line no-unused-vars
 type CommandExecuteType = (options: CommandExecuteOptions) => any;
 
-interface ICOMMAND_OBJECT {
+type CommandObject = {
     data: ApplicationCommandData;
     execute: CommandExecuteType;
-}
+};
 
-export { CommandExecuteOptions, CommandExecuteType, ICOMMAND_OBJECT };
+export { CommandExecuteOptions, CommandExecuteType, CommandObject };

@@ -1,10 +1,10 @@
-interface IUSERDATA {
+type UserData = {
     speakerId: number;
-}
+};
 
 type TalkingSetting = {
     guildid: string;
-    users: IUSERDATA[];
+    users: UserData[];
 };
 
-export { TalkingSetting, IUSERDATA };
+export { TalkingSetting, UserData };

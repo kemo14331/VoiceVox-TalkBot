@@ -1,6 +1,6 @@
-import { CommandExecuteOptions, ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
 
-module.exports = async (): Promise<ICOMMAND_OBJECT> => {
+module.exports = async (): Promise<CommandObject> => {
     return {
         data: {
             name: 'ping',

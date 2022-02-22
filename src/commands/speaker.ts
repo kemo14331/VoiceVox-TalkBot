@@ -5,7 +5,7 @@ import {
     MessageEmbed,
 } from 'discord.js';
 import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
-import { CommandExecuteOptions, ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
 import { CommandReply } from '../util/CommandReply';
 
 /**
@@ -23,7 +23,7 @@ async function genSpeakerChoices(): Promise<ApplicationCommandOptionChoice[]> {
     return [];
 }
 
-module.exports = async (): Promise<ICOMMAND_OBJECT> => {
+module.exports = async (): Promise<CommandObject> => {
     return {
         data: {
             name: 'speaker',

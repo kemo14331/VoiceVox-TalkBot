@@ -2,7 +2,7 @@ import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@d
 import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
-import { IMAIN_PROVIDER } from './types/IMainProvider';
+import { MainProvider } from './types/MainProvider';
 import { BotMessage } from './util/BotMessage';
 import { loadCommands, registerCommands } from './util/CommandRegister';
 import { bufferToStream } from './util/StreamUtil';
@@ -10,7 +10,7 @@ import { bufferToStream } from './util/StreamUtil';
 dotenv.config();
 
 // Providerの初期化
-const mainProvider: IMAIN_PROVIDER = {
+const mainProvider: MainProvider = {
     sessions: [],
     commands: [],
 };

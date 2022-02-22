@@ -1,13 +1,13 @@
 import { ApplicationCommandData, ApplicationCommandDataResolvable, Client } from 'discord.js';
 import glob from 'glob';
-import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
+import { CommandObject } from '../types/CommandTypes';
 
 /**
  * commands内のコマンドをロードする
  *
- * @return {Promise<ICOMMAND_OBJECT[]>}
+ * @return {Promise<CommandObject[]>}
  */
-export async function loadCommands(): Promise<ICOMMAND_OBJECT[]> {
+export async function loadCommands(): Promise<CommandObject[]> {
     return new Promise(function (resolve, reject) {
         glob(__dirname + '/../commands/*.ts', function (err, res) {
             if (err) {
@@ -16,7 +16,7 @@ export async function loadCommands(): Promise<ICOMMAND_OBJECT[]> {
             Promise.all(
                 res.map(async (file) => {
                     const func = require(file.replace(__dirname, '.').replace('.ts', ''));
-                    return (await func()) as ICOMMAND_OBJECT;
+                    return (await func()) as CommandObject;
                 })
             ).then(async (commands) => {
                 console.log(`Loaded ${commands.length} commands.`);
