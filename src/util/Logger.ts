@@ -61,7 +61,7 @@ export class Logger {
      */
     public static warn(message: string) {
         const logger = Log4js.getLogger('bot');
-        logger.info(message);
+        logger.warn(message);
     }
 
     /**
