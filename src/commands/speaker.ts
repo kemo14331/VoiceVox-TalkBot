@@ -1,11 +1,10 @@
 import {
     ApplicationCommandOptionChoice,
     CommandInteractionOptionResolver,
-    MessageActionRow,
     MessageAttachment,
     MessageEmbed,
-    MessageSelectMenu,
 } from 'discord.js';
+import SelectStyleComponent from '../components/SelectStyleComponent';
 import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
 import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
 import { BotMessage } from '../util/BotMessage';
@@ -106,30 +105,11 @@ module.exports = async (): Promise<CommandObject> => {
                         'speaker',
                         true
                     );
-                    const speakers = await VoiceVoxEngine.getSpeakers();
-                    if (speakers) {
-                        const speaker = speakers.find((speaker) => speaker.speaker_uuid === speakerUuid);
-                        if (speaker) {
-                            const row = new MessageActionRow({
-                                components: [
-                                    new MessageSelectMenu({
-                                        custom_id: 'selectStyle',
-                                        placeholder: '選択してください',
-                                        options: speaker.styles.map((style) => {
-                                            return { label: style.name, value: String(style.id) };
-                                        }),
-                                    }),
-                                ],
-                            });
-                            options.interaction.reply({
-                                embeds: BotMessage.info(`${speaker.name} のスタイルを選択してください`).embeds,
-                                components: [row],
-                                ephemeral: true,
-                            });
-                            break;
-                        }
-                    }
-                    options.interaction.reply(CommandReply.error('情報の取得に失敗しました。', true));
+                    options.interaction.reply({
+                        embeds: BotMessage.info(`スタイルを選択してください。`).embeds,
+                        components: [await SelectStyleComponent.view({ speakerUuid: speakerUuid })],
+                        ephemeral: true,
+                    });
                     break;
                 }
             }
