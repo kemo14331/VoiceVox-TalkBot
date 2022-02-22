@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
 import { IMAIN_PROVIDER } from './types/IMainProvider';
 import { BotMessage } from './util/BotMessage';
-import { load_commands, register_commands } from './util/CommandRegister';
+import { loadCommands, registerCommands } from './util/CommandRegister';
 import { bufferToStream } from './util/StreamUtil';
 
 dotenv.config();
@@ -21,9 +21,9 @@ const client = new Client({
 
 client.once('ready', async () => {
     const voiceVoxEngine = new VoiceVoxEngine();
-    mainProvider.commands = await load_commands();
+    mainProvider.commands = await loadCommands();
     const datas: Array<ApplicationCommandDataResolvable> = mainProvider.commands.map((command) => command.data);
-    await register_commands({ client: client, datas: datas, guildId: '851815435045568562' });
+    await registerCommands({ client: client, datas: datas, guildId: '851815435045568562' });
     for (const guild of client.guilds.cache) {
         if (guild[1].me?.voice.channel) {
             guild[1].me.voice.disconnect();
@@ -42,9 +42,9 @@ client.on('messageCreate', async (message) => {
         );
         if (session) {
             const talkEngine = new VoiceVoxEngine();
-            const query = await talkEngine.getAudioQuery({ text: message.content, speaker: 1 });
+            const query = await talkEngine.getAudioQuery(message.content, 1);
             if (query) {
-                const buffer = await talkEngine.Synthesis({ query: query, speaker: 1 });
+                const buffer = await talkEngine.synthesis(query, 1);
                 if (buffer) {
                     const player = createAudioPlayer({
                         behaviors: {
@@ -65,7 +65,7 @@ client.on('voiceStateUpdate', async (_, newState) => {
         if (!newState.guild.me?.voice.channel.members.some((member) => !member.user.bot)) {
             console.log(`Leaved All Members: ${newState.guild.me.voice.channel.toString()}`);
             for (let i = 0; i < mainProvider.sessions.length; i++) {
-                let session = mainProvider.sessions[i];
+                const session = mainProvider.sessions[i];
                 if (session.guild.id === newState.guild.id) {
                     session.textChannel.send(BotMessage.info(`${session.voiceChannel.toString()} から切断しました。`));
                     mainProvider.sessions.splice(i);

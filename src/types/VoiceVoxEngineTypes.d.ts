@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 /**
  * Preset settings held by the engine.
  */

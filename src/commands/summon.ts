@@ -27,7 +27,7 @@ module.exports = async (): Promise<ICOMMAND_OBJECT> => {
                         options.interaction.reply(CommandReply.error('ボイスチャンネルに接続できません。', true));
                         return;
                     }
-                    let connection = joinVoiceChannel({
+                    const connection = joinVoiceChannel({
                         channelId: voiceChannel.id,
                         guildId: guild.id,
                         adapterCreator: guild.voiceAdapterCreator,

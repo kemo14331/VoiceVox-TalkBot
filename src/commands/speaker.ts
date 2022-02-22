@@ -8,6 +8,10 @@ import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
 import { CommandExecuteOptions, ICOMMAND_OBJECT } from '../types/ICommandTypes';
 import { CommandReply } from '../util/CommandReply';
 
+/**
+ * Speakersパラメータの選択肢を得る
+ * @return {Promise<ApplicationCommandOptionChoice[]>} speakersパラメータの選択肢配列
+ */
 async function genSpeakerChoices(): Promise<ApplicationCommandOptionChoice[]> {
     const voiceVoxEngine = new VoiceVoxEngine();
     const speakers = await voiceVoxEngine.getSpeakers();
@@ -59,15 +63,13 @@ module.exports = async (): Promise<ICOMMAND_OBJECT> => {
                         return;
                     }
                     for (const speaker of speakers) {
-                        const speaker_info = await voiceVoxEngine.getSpeakerInfo({
-                            speaker_uuid: speaker.speaker_uuid,
-                        });
+                        const speakerInfo = await voiceVoxEngine.getSpeakerInfo(speaker.speaker_uuid);
                         const embed = new MessageEmbed({
                             color: 'GREEN',
                             title: speaker.name,
                         });
-                        if (speaker_info) {
-                            const sfbuffer = Buffer.from(speaker_info.style_infos[0].icon, 'base64');
+                        if (speakerInfo) {
+                            const sfbuffer = Buffer.from(speakerInfo.style_infos[0].icon, 'base64');
                             const attachment = new MessageAttachment(sfbuffer, `icon_${speaker.speaker_uuid}.png`);
                             files.push(attachment);
                             // embed.setAuthor({

@@ -2,7 +2,12 @@ import { ApplicationCommandData, ApplicationCommandDataResolvable, Client } from
 import glob from 'glob';
 import { ICOMMAND_OBJECT } from '../types/ICommandTypes';
 
-export async function load_commands(): Promise<ICOMMAND_OBJECT[]> {
+/**
+ * commands内のコマンドをロードする
+ *
+ * @return {Promise<ICOMMAND_OBJECT[]>}
+ */
+export async function loadCommands(): Promise<ICOMMAND_OBJECT[]> {
     return new Promise(function (resolve, reject) {
         glob(__dirname + '/../commands/*.ts', function (err, res) {
             if (err) {
@@ -27,7 +32,13 @@ type ResisterCommandsOptions = {
     guildId?: string;
 };
 
-export async function register_commands(options: ResisterCommandsOptions) {
+/**
+ * コマンドを登録する。
+ * guildIdを指定しない場合、全体コマンドとして登録する。(反映されるまで1時間程度かかる)
+ *
+ * @param {ResisterCommandsOptions} options
+ */
+export async function registerCommands(options: ResisterCommandsOptions) {
     if (options.guildId) {
         await options.client.application?.commands.set(options.datas, options.guildId);
     } else {
