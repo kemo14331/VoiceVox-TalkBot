@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
 import { IMAIN_PROVIDER } from './types/IMainProvider';
 import { BotMessage } from './util/BotMessage';
-import { load_commands } from './util/CommandLoader';
+import { load_commands } from './util/CommandRegister';
 import { bufferToStream } from './util/StreamUtil';
 
 dotenv.config();
