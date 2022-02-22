@@ -4,9 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "ts-node src/main.ts",
-        "start": "nodemon dist/main.js",
-        "debug": "nodemon --inspect dist/main.js",
+        "start": "nodemon dist/app.js",
+        "debug": "nodemon --inspect dist/app.js",
         "build": "tsc -p .",
         "build:watch": "tsc --watch"
     },
