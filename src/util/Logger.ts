@@ -35,6 +35,16 @@ export class Logger {
     }
 
     /**
+     * debugレベルのログを出力する
+     *
+     * @param {string} message
+     */
+    public static debug(message: string) {
+        const logger = Log4js.getLogger('bot');
+        logger.debug(message);
+    }
+
+    /**
      * infoレベルのログを出力する
      *
      * @param {string} message
