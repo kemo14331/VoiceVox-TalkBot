@@ -6,7 +6,7 @@ module.exports = async (): Promise<CommandObject> => {
     return {
         data: {
             name: 'leave',
-            description: 'botをボイスチャンネルから退出させる',
+            description: 'Botをボイスチャンネルから退出させる',
         },
         execute: (options: CommandExecuteOptions) => {
             if (options.interaction.guild) {

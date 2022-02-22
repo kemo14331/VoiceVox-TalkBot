@@ -39,7 +39,11 @@ module.exports = async (): Promise<CommandObject> => {
                         voiceConnection: connection,
                         settings: { guildid: guild.id, users: [] },
                     });
-                    options.interaction.reply(CommandReply.info(`${voiceChannel.toString()} に参加しました。`));
+                    options.interaction.reply(
+                        CommandReply.info(
+                            `${voiceChannel.toString()} に参加しました。\n\`/speaker set\`で読み上げに使用する音声モデルを変更できます。`
+                        )
+                    );
                 } else {
                     options.interaction.reply(
                         CommandReply.error('Botを呼び出すにはボイスチャンネルに参加してください。', true)
