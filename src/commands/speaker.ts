@@ -108,7 +108,7 @@ module.exports = async (): Promise<CommandObject> => {
                     );
                     if (speakerUuid === 'null') {
                         options.interaction.reply(
-                            CommandReply.error('Botのリロードが必要です。\n管理者にお問い合わせ下さい。')
+                            CommandReply.error('Botのリロードが必要です。\n管理者にお問い合わせ下さい。', true)
                         );
                         return;
                     }
