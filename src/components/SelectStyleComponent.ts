@@ -21,7 +21,7 @@ interface SelectStyleComponent extends MessageActionComponent {
 
 export default {
     id: id,
-    view: async (options: SelectStyleComponentModel): Promise<MessageActionRow> => {
+    view: async (options: SelectStyleComponentModel): Promise<MessageActionRow | null> => {
         const speakers = await VoiceVoxEngine.getSpeakers();
         let choices: { label: string; value: string }[] = [];
         if (speakers) {
@@ -31,6 +31,8 @@ export default {
                     return { label: style.name, value: String(style.id) };
                 });
             }
+        } else {
+            throw Error;
         }
         return new MessageActionRow({
             components: [
@@ -43,22 +45,23 @@ export default {
         });
     },
     execute: async (options: MessageActionComponentExecuteOptions) => {
+        await options.interaction.deferReply({ ephemeral: true });
         const styleId = (options.interaction as SelectMenuInteraction).values[0];
         const speakers = await VoiceVoxEngine.getSpeakers();
         const speaker = speakers?.find((speaker) => speaker.styles.find((style) => style.id === Number(styleId)));
         if (!speaker) {
-            await options.interaction.reply(CommandReply.error('情報の取得に失敗しました', true));
+            await options.interaction.followUp(CommandReply.error('情報の取得に失敗しました', true));
             return;
         }
         const speakerInfo = await VoiceVoxEngine.getSpeakerInfo(speaker.speaker_uuid);
         const styleInfo = speakerInfo?.style_infos.find((styleInfo) => styleInfo.id === Number(styleId));
         if (!styleInfo) {
-            await options.interaction.reply(CommandReply.error('情報の取得に失敗しました', true));
+            await options.interaction.followUp(CommandReply.error('情報の取得に失敗しました', true));
             return;
         }
         const sfbuffer = Buffer.from(styleInfo.icon, 'base64');
         const attachment = new MessageAttachment(sfbuffer, `icon_${speaker.speaker_uuid}.png`);
-        await options.interaction.reply({
+        await options.interaction.followUp({
             content: '以下のモデルに設定しました。',
             embeds: [
                 new MessageEmbed({

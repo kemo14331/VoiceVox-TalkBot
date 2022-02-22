@@ -112,11 +112,16 @@ module.exports = async (): Promise<CommandObject> => {
                         );
                         return;
                     }
-                    options.interaction.reply({
-                        embeds: BotMessage.info(`スタイルを選択してください。`).embeds,
-                        components: [await SelectStyleComponent.view({ speakerUuid: speakerUuid })],
-                        ephemeral: true,
-                    });
+                    try {
+                        const view = await SelectStyleComponent.view({ speakerUuid: speakerUuid });
+                        options.interaction.reply({
+                            embeds: BotMessage.info(`スタイルを選択してください。`).embeds,
+                            components: [view],
+                            ephemeral: true,
+                        });
+                    } catch {
+                        options.interaction.reply(CommandReply.error('スタイル情報の取得に失敗しました。', true));
+                    }
                     break;
                 }
             }
