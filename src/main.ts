@@ -88,10 +88,15 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.isCommand()) {
         for (const command of mainProvider.commands) {
             if (command.data.name === (interaction as CommandInteraction).commandName) {
-                await command.execute({
-                    interaction: interaction,
-                    mainProvider: mainProvider,
-                });
+                try {
+                    await command.execute({
+                        interaction: interaction,
+                        mainProvider: mainProvider,
+                    });
+                } catch (e) {
+                    Logger.error(`Faild to execute command: ${command.data.name}`);
+                    Logger.trace(String(e));
+                }
             }
         }
         return;
@@ -100,7 +105,12 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.isMessageComponent()) {
         for (const component of mainProvider.components) {
             if (component.id === (interaction as MessageComponentInteraction).customId) {
-                await component.execute({ interaction: interaction, mainProvider: mainProvider });
+                try {
+                    await component.execute({ interaction: interaction, mainProvider: mainProvider });
+                } catch (e) {
+                    Logger.error(`Faild to execute command: ${component.id}`);
+                    Logger.trace(String(e));
+                }
             }
         }
         return;
