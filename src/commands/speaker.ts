@@ -13,8 +13,7 @@ import { CommandReply } from '../util/CommandReply';
  * @return {Promise<ApplicationCommandOptionChoice[]>} speakersパラメータの選択肢配列
  */
 async function genSpeakerChoices(): Promise<ApplicationCommandOptionChoice[]> {
-    const voiceVoxEngine = new VoiceVoxEngine();
-    const speakers = await voiceVoxEngine.getSpeakers();
+    const speakers = await VoiceVoxEngine.getSpeakers();
     if (speakers) {
         return speakers.map((speaker) => {
             return { name: speaker.name, value: speaker.speaker_uuid };
@@ -51,19 +50,18 @@ module.exports = async (): Promise<CommandObject> => {
             ],
         },
         execute: async (options: CommandExecuteOptions) => {
-            const voiceVoxEngine = new VoiceVoxEngine();
             switch ((options.interaction.options as CommandInteractionOptionResolver).getSubcommand(true)) {
                 case 'list': {
                     const speakersEmbeds: MessageEmbed[] = [];
                     const files = [];
-                    const speakers = await voiceVoxEngine.getSpeakers();
+                    const speakers = await VoiceVoxEngine.getSpeakers();
                     await options.interaction.deferReply({ ephemeral: true });
                     if (!speakers) {
                         await options.interaction.followUp(CommandReply.error('Speakerの取得に失敗しました。', true));
                         return;
                     }
                     for (const speaker of speakers) {
-                        const speakerInfo = await voiceVoxEngine.getSpeakerInfo(speaker.speaker_uuid);
+                        const speakerInfo = await VoiceVoxEngine.getSpeakerInfo(speaker.speaker_uuid);
                         const embed = new MessageEmbed({
                             color: 'GREEN',
                             title: speaker.name,

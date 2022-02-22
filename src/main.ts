@@ -23,7 +23,6 @@ const client = new Client({
 });
 
 client.once('ready', async () => {
-    const voiceVoxEngine = new VoiceVoxEngine();
     mainProvider.commands = await loadCommands();
     Logger.info(`Loaded ${mainProvider.commands.length} commands.`);
     const datas: Array<ApplicationCommandDataResolvable> = mainProvider.commands.map((command) => command.data);
@@ -34,8 +33,8 @@ client.once('ready', async () => {
         }
     }
     Logger.info(`Logged in as ${client.user?.tag}.`);
-    if (await voiceVoxEngine.isReady()) {
-        Logger.info(`VoiceVox-Engine is ready: v${await voiceVoxEngine.getVersion()}`);
+    if (await VoiceVoxEngine.isReady()) {
+        Logger.info(`VoiceVox-Engine is ready: v${await VoiceVoxEngine.getVersion()}`);
     } else {
         Logger.warn('VoiceVox-Engine is not ready.');
     }
@@ -47,10 +46,9 @@ client.on('messageCreate', async (message) => {
             (session) => session.textChannel.id === message.channelId && !message.author.bot
         );
         if (session) {
-            const talkEngine = new VoiceVoxEngine();
-            const query = await talkEngine.getAudioQuery(message.content, 1);
+            const query = await VoiceVoxEngine.getAudioQuery(message.content, 1);
             if (query) {
-                const buffer = await talkEngine.synthesis(query, 1);
+                const buffer = await VoiceVoxEngine.synthesis(query, 1);
                 if (buffer) {
                     const player = createAudioPlayer({
                         behaviors: {

@@ -14,7 +14,7 @@ export class VoiceVoxEngine {
      *
      * @return {Promise<boolean>}
      */
-    async isReady(): Promise<boolean> {
+    public static async isReady(): Promise<boolean> {
         try {
             const response = await rpc.get('version');
             return response.status == 200;
@@ -29,7 +29,7 @@ export class VoiceVoxEngine {
      *
      * @return {Promise<string | null>} バージョン文字列
      */
-    async getVersion(): Promise<string | null> {
+    public static async getVersion(): Promise<string | null> {
         try {
             const response = await rpc.get('version');
             if (response.status == 200) {
@@ -48,7 +48,7 @@ export class VoiceVoxEngine {
      *
      * @return {Promise<Speaker[] | null>}
      */
-    async getSpeakers(): Promise<Speaker[] | null> {
+    public static async getSpeakers(): Promise<Speaker[] | null> {
         try {
             const response: AxiosResponse<Speaker[]> = await rpc.get('speakers');
             if (response.status == 200) {
@@ -68,7 +68,7 @@ export class VoiceVoxEngine {
      * @param {string} speakerUuid speakerのUUID
      * @return {Promise<SpeakerInfo | null>}
      */
-    async getSpeakerInfo(speakerUuid: string): Promise<SpeakerInfo | null> {
+    public static async getSpeakerInfo(speakerUuid: string): Promise<SpeakerInfo | null> {
         try {
             const response: AxiosResponse<SpeakerInfo> = await rpc.get('speaker_info', {
                 params: { speaker_uuid: speakerUuid },
@@ -89,7 +89,7 @@ export class VoiceVoxEngine {
      *
      * @return {Promise<Preset[] | null>}
      */
-    async getPresets(): Promise<Preset[] | null> {
+    public static async getPresets(): Promise<Preset[] | null> {
         try {
             const response: AxiosResponse<Preset[]> = await rpc.get('presets');
             if (response.status == 200) {
@@ -110,7 +110,7 @@ export class VoiceVoxEngine {
      * @param {number} speaker SpeakerのスタイルID
      * @return {Promise<AudioQuery | null>}
      */
-    async getAudioQuery(text: string, speaker: number): Promise<AudioQuery | null> {
+    public static async getAudioQuery(text: string, speaker: number): Promise<AudioQuery | null> {
         try {
             const response = await rpc.post(`/audio_query?text=${encodeURI(text)}&speaker=${speaker}`);
             if (response.status == 200) {
@@ -131,7 +131,7 @@ export class VoiceVoxEngine {
      * @param {number} presetId
      * @return {Promise<AudioQuery | null>}
      */
-    async getAudioQueryFromPreset(text: string, presetId: number): Promise<AudioQuery | null> {
+    public static async getAudioQueryFromPreset(text: string, presetId: number): Promise<AudioQuery | null> {
         try {
             const response = await rpc.post(`/audio_query_from_preset?text=${encodeURI(text)}&preset_id=${presetId}`);
             if (response.status == 200) {
@@ -153,7 +153,11 @@ export class VoiceVoxEngine {
      * @param {boolean} enableInterrogativeUpspeak 疑問系のテキストが与えられたら語尾を自動調整するか
      * @return {Promise<Buffer | null>} Wav形式のバッファ文字列
      */
-    async synthesis(query: AudioQuery, speaker: number, enableInterrogativeUpspeak?: boolean): Promise<Buffer | null> {
+    public static async synthesis(
+        query: AudioQuery,
+        speaker: number,
+        enableInterrogativeUpspeak?: boolean
+    ): Promise<Buffer | null> {
         try {
             if (!enableInterrogativeUpspeak) enableInterrogativeUpspeak = true;
             const response = await rpc.post(
