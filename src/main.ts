@@ -1,10 +1,11 @@
 import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@discordjs/voice';
-import { ApplicationCommandDataResolvable, Client, CommandInteraction } from 'discord.js';
+import { ApplicationCommandDataResolvable, Client, CommandInteraction, MessageComponentInteraction } from 'discord.js';
 import dotenv from 'dotenv';
 import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
 import { MainProvider } from './types/MainProvider';
 import { BotMessage } from './util/BotMessage';
 import { loadCommands, registerCommands } from './util/CommandRegister';
+import { loadComponents } from './util/ComponentResister';
 import { Logger } from './util/Logger';
 import { SessionManager } from './util/SessionManager';
 import { bufferToStream } from './util/StreamUtil';
@@ -17,6 +18,7 @@ Logger.initialize();
 const mainProvider: MainProvider = {
     sessionManager: new SessionManager(),
     commands: [],
+    components: [],
 };
 
 const client = new Client({
@@ -26,6 +28,8 @@ const client = new Client({
 client.once('ready', async () => {
     mainProvider.commands = await loadCommands();
     Logger.info(`Loaded ${mainProvider.commands.length} commands.`);
+    mainProvider.components = await loadComponents();
+    Logger.info(`Loaded ${mainProvider.components.length} components.`);
     const datas: Array<ApplicationCommandDataResolvable> = mainProvider.commands.map((command) => command.data);
     await registerCommands({ client: client, datas: datas, guildId: '851815435045568562' });
     for (const guild of client.guilds.cache) {
@@ -81,15 +85,28 @@ client.on('voiceStateUpdate', async (_, newState) => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) {
-        console.log(interaction.type);
+    if (interaction.isCommand()) {
+        for (const command of mainProvider.commands) {
+            if (command.data.name === (interaction as CommandInteraction).commandName) {
+                await command.execute({
+                    interaction: interaction,
+                    mainProvider: mainProvider,
+                });
+            }
+        }
         return;
     }
-    for (const command of mainProvider.commands) {
-        if (command.data.name == (interaction as CommandInteraction).commandName) {
-            await command.execute({ interaction: interaction as CommandInteraction, mainProvider: mainProvider });
+
+    if (interaction.isMessageComponent()) {
+        for (const component of mainProvider.components) {
+            if (component.id === (interaction as MessageComponentInteraction).customId) {
+                await component.execute({ interaction: interaction, mainProvider: mainProvider });
+            }
         }
+        return;
     }
+
+    Logger.debug(interaction.type);
 });
 
 client.login(process.env.TOKEN);
