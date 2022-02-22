@@ -12,7 +12,7 @@ export class BotMessage {
      */
     static error(content: string): MessageOptions {
         return {
-            embeds: [{ color: 'RED', title: '❌ Error', description: content }],
+            embeds: [{ color: 'RED', description: content }],
         };
     }
 
@@ -24,7 +24,19 @@ export class BotMessage {
      */
     static info(content: string): MessageOptions {
         return {
-            embeds: [{ color: 'AQUA', title: '✅ Info', description: content }],
+            embeds: [{ color: 'AQUA', description: content }],
+        };
+    }
+
+    /**
+     * 汎用成功メッセージ
+     *
+     * @param {string} content 表示する文字列
+     * @return {MessageOptions}
+     */
+    static success(content: string): MessageOptions {
+        return {
+            embeds: [{ color: 'GREEN', description: content }],
         };
     }
 }

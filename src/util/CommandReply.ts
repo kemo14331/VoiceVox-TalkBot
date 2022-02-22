@@ -32,4 +32,18 @@ export class CommandReply {
             ephemeral: ephemeral,
         };
     }
+
+    /**
+     * 汎用成功メッセージ
+     *
+     * @param {string} content 表示する文字列
+     * @param {boolean} ephemeral
+     * @return {MessageOptions}
+     */
+    static success(content: string, ephemeral: boolean = false): InteractionReplyOptions {
+        return {
+            embeds: BotMessage.success(content).embeds,
+            ephemeral: ephemeral,
+        };
+    }
 }
