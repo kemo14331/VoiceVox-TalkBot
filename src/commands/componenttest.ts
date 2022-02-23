@@ -1,4 +1,4 @@
-import SampleComponent from '../components/sampleComponent';
+import SampleComponent from '../components/SampleComponent';
 import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
 
 module.exports = async (): Promise<CommandObject> => {
