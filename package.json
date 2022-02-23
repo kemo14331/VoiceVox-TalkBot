@@ -7,7 +7,8 @@
         "start": "nodemon dist/app.js",
         "debug": "nodemon --inspect dist/app.js",
         "build": "tsc -p .",
-        "build:watch": "tsc --watch"
+        "build:watch": "tsc --watch",
+        "lint": "eslint ."
     },
     "keywords": [],
     "author": "",
