@@ -3,7 +3,7 @@
 /**
  * Preset settings held by the engine.
  */
-type Preset = {
+interface Preset {
     /** ID of preset. */
     id: number;
     /** Name of preset. */
@@ -24,22 +24,22 @@ type Preset = {
     prePhonemeLength: number;
     /** Silence time after the sound. */
     postPhonemeLength: number;
-};
+}
 
 /**
  * Style of speaker.
  */
-type SpeakerStyle = {
+interface SpeakerStyle {
     /** Name of speaker. */
     name: string;
     /** ID of speaker. */
     id: number;
-};
+}
 
 /**
  * Speaker of VoiceVox.
  */
-type Speaker = {
+interface Speaker {
     /** Name of speaker. */
     name: string;
     /** UUID of speaker. */
@@ -48,36 +48,36 @@ type Speaker = {
     styles: SpeakerStyle[];
     /** Version of speaker */
     version?: string;
-};
+}
 
 /**
  * Information about the speakerstyle.
  */
-type StyleInfo = {
+interface StyleInfo {
     /** ID of style. */
     id: number;
     /** Base64-encoded icon of the style in question. */
     icon: string;
     /** Base64-encoded wav file of voice_sample. */
     voice_samples: string[];
-};
+}
 
 /**
  * Information about the specified speaker_uuid.
  */
-type SpeakerInfo = {
+interface SpeakerInfo {
     /** policy.md */
     policy: string;
     /** portrait.png with base64-encoding. */
     portrait: string;
     /** Additional information on style. */
     style_infos: StyleInfo[];
-};
+}
 
 /**
  * Mora of accent.
  */
-type Mora = {
+interface Mora {
     /** Text of mora. */
     text: string;
     /** Consonant phoneme. */
@@ -90,12 +90,12 @@ type Mora = {
     vowel_length: number;
     /** Pitch of mora */
     pitch: number;
-};
+}
 
 /**
  * Accent phrases for speech synthesis.
  */
-type AccentPhrase = {
+interface AccentPhrase {
     /** Array of moras. */
     moras: Mora[];
     /** Accent location. */
@@ -104,12 +104,12 @@ type AccentPhrase = {
     pause_mora?: Mora[];
     /** Interrogative or not. */
     is_interrogative?: boolean;
-};
+}
 
 /**
  * Query for speech synthesis.
  */
-type AudioQuery = {
+interface AudioQuery {
     /** Array of AccentPhrase. */
     accent_phrases: AccentPhrase[];
     /** Speed of speech. */
@@ -130,6 +130,6 @@ type AudioQuery = {
     outputStereo: boolean;
     /** AquesTalk-like reading pseudonyms. Ignored for text-to-speech queries. */
     kana: string;
-};
+}
 
 export { Preset, SpeakerStyle, Speaker, StyleInfo, SpeakerInfo, Mora, AccentPhrase, AudioQuery };
