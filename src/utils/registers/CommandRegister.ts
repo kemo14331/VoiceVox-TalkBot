@@ -1,7 +1,7 @@
 import { ApplicationCommandData, ApplicationCommandDataResolvable, Client } from 'discord.js';
 import glob from 'glob';
-import { CommandObject } from '../types/CommandTypes';
-import { Logger } from './Logger';
+import { CommandObject } from '../../models/CommandModel';
+import { Logger } from '../Logger';
 
 /**
  * commands内のコマンドをロードする
@@ -10,7 +10,7 @@ import { Logger } from './Logger';
  */
 export async function loadCommands(): Promise<CommandObject[]> {
     return new Promise(function (resolve, reject) {
-        glob(__dirname + '/../commands/*.ts', function (err, res) {
+        glob(process.cwd() + '/src/commands/*.ts', function (err, res) {
             if (err) {
                 reject(err);
             }

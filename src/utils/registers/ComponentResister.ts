@@ -1,6 +1,6 @@
 import glob from 'glob';
-import { MessageActionComponent } from '../types/MessageActionComponentTypes';
-import { Logger } from './Logger';
+import { MessageActionComponent } from '../../models/MessageActionComponentModel';
+import { Logger } from '../Logger';
 
 /**
  * コンポーネントをロードする
@@ -8,7 +8,7 @@ import { Logger } from './Logger';
  */
 export async function loadComponents(): Promise<MessageActionComponent[]> {
     return new Promise(function (resolve, reject) {
-        glob(__dirname + '/../components/*.ts', function (err, res) {
+        glob(process.cwd() + '/src/components/*.ts', function (err, res) {
             if (err) {
                 reject(err);
             }

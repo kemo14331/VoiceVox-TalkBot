@@ -1,10 +1,10 @@
-type UserData = {
+interface UserData {
     speakerId: number;
-};
+}
 
-type TalkingSetting = {
+interface TalkingSetting {
     guildid: string;
     users: UserData[];
-};
+}
 
 export { TalkingSetting, UserData };

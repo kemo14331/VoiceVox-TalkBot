@@ -5,10 +5,10 @@ import {
     MessageEmbed,
 } from 'discord.js';
 import SelectStyleComponent from '../components/SelectStyleComponent';
-import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
-import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
-import { BotMessage } from '../util/BotMessage';
-import { CommandReply } from '../util/CommandReply';
+import { CommandExecuteOptions, CommandObject } from '../models/CommandModel';
+import { BotMessage } from '../utils/messages/BotMessage';
+import { CommandReply } from '../utils/messages/CommandReply';
+import { VoiceVoxEngine } from '../VoiceVoxEngine';
 
 /**
  * Speakersパラメータの選択肢を得る

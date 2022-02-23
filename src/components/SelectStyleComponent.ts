@@ -5,9 +5,9 @@ import {
     MessageSelectMenu,
     SelectMenuInteraction,
 } from 'discord.js';
-import { VoiceVoxEngine } from '../talkLib/VoiceVoxEngine';
-import { MessageActionComponent, MessageActionComponentExecuteOptions } from '../types/MessageActionComponentTypes';
-import { CommandReply } from '../util/CommandReply';
+import { MessageActionComponent, MessageActionComponentExecuteOptions } from '../models/MessageActionComponentModel';
+import { CommandReply } from '../utils/messages/CommandReply';
+import { VoiceVoxEngine } from '../VoiceVoxEngine';
 
 const id = 'selectStyle';
 

@@ -1,6 +1,6 @@
 import { joinVoiceChannel } from '@discordjs/voice';
-import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
-import { CommandReply } from '../util/CommandReply';
+import { CommandExecuteOptions, CommandObject } from '../models/CommandModel';
+import { CommandReply } from '../utils/messages/CommandReply';
 
 module.exports = async (): Promise<CommandObject> => {
     return {

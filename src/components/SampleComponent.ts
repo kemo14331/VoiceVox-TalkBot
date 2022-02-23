@@ -1,6 +1,6 @@
 import { MessageActionRow, MessageSelectMenu, SelectMenuInteraction } from 'discord.js';
-import { MessageActionComponent, MessageActionComponentExecuteOptions } from '../types/MessageActionComponentTypes';
-import { CommandReply } from '../util/CommandReply';
+import { MessageActionComponent, MessageActionComponentExecuteOptions } from '../models/MessageActionComponentModel';
+import { CommandReply } from '../utils/messages/CommandReply';
 
 const id = 'sampleComponent';
 

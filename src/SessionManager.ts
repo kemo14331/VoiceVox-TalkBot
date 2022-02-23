@@ -1,5 +1,5 @@
-import { Session } from '../types/SettionTypes';
-import { Logger } from './Logger';
+import { Session } from './models/SettionModel';
+import { Logger } from './utils/Logger';
 
 /**
  * セッションの管理クラス

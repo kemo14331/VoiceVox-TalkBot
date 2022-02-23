@@ -1,14 +1,14 @@
 import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@discordjs/voice';
 import { ApplicationCommandDataResolvable, Client, CommandInteraction, MessageComponentInteraction } from 'discord.js';
 import dotenv from 'dotenv';
-import { VoiceVoxEngine } from './talkLib/VoiceVoxEngine';
-import { MainProvider } from './types/MainProvider';
-import { BotMessage } from './util/BotMessage';
-import { loadCommands, registerCommands } from './util/CommandRegister';
-import { loadComponents } from './util/ComponentResister';
-import { Logger } from './util/Logger';
-import { SessionManager } from './util/SessionManager';
-import { bufferToStream } from './util/StreamUtil';
+import { MainProvider } from './models/MainProviderModel';
+import { SessionManager } from './SessionManager';
+import { Logger } from './utils/Logger';
+import { BotMessage } from './utils/messages/BotMessage';
+import { loadCommands, registerCommands } from './utils/registers/CommandRegister';
+import { loadComponents } from './utils/registers/ComponentResister';
+import { bufferToStream } from './utils/StreamUtil';
+import { VoiceVoxEngine } from './VoiceVoxEngine';
 
 dotenv.config();
 

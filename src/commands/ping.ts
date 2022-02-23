@@ -1,4 +1,4 @@
-import { CommandExecuteOptions, CommandObject } from '../types/CommandTypes';
+import { CommandExecuteOptions, CommandObject } from '../models/CommandModel';
 
 module.exports = async (): Promise<CommandObject> => {
     return {
