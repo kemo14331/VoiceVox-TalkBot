@@ -8,7 +8,7 @@ module.exports = async (): Promise<CommandObject> => {
             name: 'leave',
             description: 'Botをボイスチャンネルから退出させる',
         },
-        execute: (options: CommandExecuteOptions) => {
+        execute: async (options: CommandExecuteOptions) => {
             if (options.interaction.guild) {
                 if (options.interaction.guild.me?.voice.channel) {
                     const session = options.mainProvider.sessionManager.sessions.find(
@@ -16,7 +16,7 @@ module.exports = async (): Promise<CommandObject> => {
                     );
                     if (session) {
                         options.mainProvider.sessionManager.delete(session);
-                        options.interaction.reply(
+                        await options.interaction.reply(
                             CommandReply.info(
                                 `${options.interaction.guild.me.voice.channel.toString()} から切断しました。`
                             )
@@ -25,10 +25,10 @@ module.exports = async (): Promise<CommandObject> => {
                         Logger.warn('An unknown session was detected.');
                     }
                 } else {
-                    options.interaction.reply(CommandReply.error('ボイスチャンネルに接続していません。', true));
+                    await options.interaction.reply(CommandReply.error('ボイスチャンネルに接続していません。', true));
                 }
             } else {
-                options.interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
+                await options.interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
             }
         },
     };

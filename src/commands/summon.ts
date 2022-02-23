@@ -18,13 +18,13 @@ module.exports = async (): Promise<CommandObject> => {
                 }
                 if (voiceChannel && guild) {
                     if (guild.me?.voice.channel) {
-                        options.interaction.reply(
+                        await options.interaction.reply(
                             CommandReply.error(`既に${voiceChannel.toString()} に参加しています。`, true)
                         );
                         return;
                     }
                     if (!voiceChannel.joinable) {
-                        options.interaction.reply(CommandReply.error('ボイスチャンネルに接続できません。', true));
+                        await options.interaction.reply(CommandReply.error('ボイスチャンネルに接続できません。', true));
                         return;
                     }
                     const connection = joinVoiceChannel({
@@ -39,18 +39,18 @@ module.exports = async (): Promise<CommandObject> => {
                         voiceConnection: connection,
                         settings: { guildid: guild.id, users: [] },
                     });
-                    options.interaction.reply(
+                    await options.interaction.reply(
                         CommandReply.info(
                             `${voiceChannel.toString()} に参加しました。\n\`/speaker set\`で読み上げに使用する音声モデルを変更できます。`
                         )
                     );
                 } else {
-                    options.interaction.reply(
+                    await options.interaction.reply(
                         CommandReply.error('Botを呼び出すにはボイスチャンネルに参加してください。', true)
                     );
                 }
             } else {
-                options.interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
+                await options.interaction.reply(CommandReply.error('このコマンドはサーバー専用です。', true));
             }
         },
     };

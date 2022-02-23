@@ -6,8 +6,8 @@ module.exports = async (): Promise<CommandObject> => {
             name: 'ping',
             description: 'pongを返す',
         },
-        execute: (options: CommandExecuteOptions) => {
-            options.interaction.reply('pong!');
+        execute: async (options: CommandExecuteOptions) => {
+            await options.interaction.reply('pong!');
         },
     };
 };

@@ -8,7 +8,7 @@ module.exports = async (): Promise<CommandObject> => {
             description: 'コンポーネントのテスト',
         },
         execute: async (options: CommandExecuteOptions) => {
-            options.interaction.reply({
+            await options.interaction.reply({
                 components: [
                     await SampleComponent.view({
                         choices: [

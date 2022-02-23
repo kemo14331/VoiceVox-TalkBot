@@ -54,7 +54,7 @@ module.exports = async (): Promise<CommandObject> => {
         execute: async (options: CommandExecuteOptions) => {
             switch ((options.interaction.options as CommandInteractionOptionResolver).getSubcommand(true)) {
                 case 'list': {
-                    options.interaction.deferReply({ ephemeral: true });
+                    await options.interaction.deferReply({ ephemeral: true });
                     const speakersEmbeds: MessageEmbed[] = [];
                     const files = [];
                     const speakers = await VoiceVoxEngine.getSpeakers();
@@ -107,20 +107,20 @@ module.exports = async (): Promise<CommandObject> => {
                         true
                     );
                     if (speakerUuid === 'null') {
-                        options.interaction.reply(
+                        await options.interaction.reply(
                             CommandReply.error('Botのリロードが必要です。\n管理者にお問い合わせ下さい。', true)
                         );
                         return;
                     }
                     try {
                         const view = await SelectStyleComponent.view({ speakerUuid: speakerUuid });
-                        options.interaction.reply({
+                        await options.interaction.reply({
                             embeds: BotMessage.info(`スタイルを選択してください。`).embeds,
                             components: [view],
                             ephemeral: true,
                         });
                     } catch {
-                        options.interaction.reply(CommandReply.error('スタイル情報の取得に失敗しました。', true));
+                        await options.interaction.reply(CommandReply.error('スタイル情報の取得に失敗しました。', true));
                     }
                     break;
                 }
