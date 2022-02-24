@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
+import config from 'config';
 import { AudioQuery, Preset, Speaker, SpeakerInfo } from './models/VoiceVoxEngineModel';
 
-const serverURL = 'http://localhost:50021';
+const serverURL = String(config.get('voicevox.api'));
 
 const rpc = axios.create({ baseURL: serverURL, proxy: false });
 

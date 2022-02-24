@@ -1,3 +1,4 @@
+import config from 'config';
 import { ApplicationCommandDataResolvable, Client } from 'discord.js';
 import { MainProvider } from '../models/MainProviderModel';
 import { Logger } from '../utils/Logger';
@@ -17,7 +18,8 @@ export async function onReady(client: Client, mainProvider: MainProvider) {
     mainProvider.components = await loadComponents();
     Logger.info(`Loaded ${mainProvider.components.length} components.`);
     const datas: Array<ApplicationCommandDataResolvable> = mainProvider.commands.map((command) => command.data);
-    await registerCommands({ client: client, datas: datas, guildId: '851815435045568562' });
+    await registerCommands({ client: client, datas: datas, guildId: config.get('bot.ownerGuild') });
+    await registerCommands({ client: client, datas: datas });
     for (const guild of client.guilds.cache) {
         if (guild[1].me?.voice.channel) {
             guild[1].me.voice.disconnect();

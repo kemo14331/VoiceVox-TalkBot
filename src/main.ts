@@ -1,3 +1,4 @@
+import config from 'config';
 import { Client } from 'discord.js';
 import dotenv from 'dotenv';
 import { onCommand } from './handlers/onCommand';
@@ -50,4 +51,13 @@ client.on('interactionCreate', async (interaction) => {
     Logger.debug(interaction.type);
 });
 
-client.login(process.env.TOKEN);
+try {
+    if (config.has('bot.token')) {
+        client.login(config.get('bot.token'));
+    } else {
+        Logger.error('Tokenが設定されていません。\nconfig/default.ymlの設定を確認してください。');
+    }
+} catch (e) {
+    Logger.error(String(e));
+    process.exit(1);
+}

@@ -1,3 +1,4 @@
+import config from 'config';
 import { CommandExecuteOptions, CommandObject } from '../models/CommandModel';
 import { Logger } from '../utils/Logger';
 import { CommandReply } from '../utils/messages/CommandReply';
@@ -17,7 +18,11 @@ module.exports = async (): Promise<CommandObject> => {
             registerCommands({
                 client: options.interaction.client,
                 datas: options.mainProvider.commands.map((command) => command.data),
-                guildId: '851815435045568562',
+                guildId: config.get('bot.ownerGuild'),
+            });
+            registerCommands({
+                client: options.interaction.client,
+                datas: options.mainProvider.commands.map((command) => command.data),
             });
             options.mainProvider.components = await loadComponents();
             Logger.info(`Reloaded ${options.mainProvider.components.length} components.`);

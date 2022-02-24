@@ -1,3 +1,4 @@
+import config from 'config';
 import * as Log4js from 'log4js';
 
 /**
@@ -8,6 +9,12 @@ export class Logger {
      * Loggerの初期化
      */
     public static initialize() {
+        let level = 'info';
+        if (config.has('debug')) {
+            if (config.get('debug') == true) {
+                level = 'all';
+            }
+        }
         Log4js.configure({
             appenders: {
                 bot: {
@@ -19,9 +26,10 @@ export class Logger {
                 },
             },
             categories: {
-                default: { appenders: ['bot', 'console'], level: 'all' },
+                default: { appenders: ['bot', 'console'], level: level },
             },
         });
+        this.debug('デバッグ情報: 表示');
     }
 
     /**

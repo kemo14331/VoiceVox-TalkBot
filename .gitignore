@@ -15,6 +15,9 @@ tmp
 dist
 database
 
+#dev config
+config/development.yml
+
 # Engine
 engine
 

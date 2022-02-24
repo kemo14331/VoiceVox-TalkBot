@@ -1,0 +1,16 @@
+# VoiceVox-Engineに関する設定
+voicevox:
+    # VoiceVox-EngineがホストしているURL
+    api: 'http://localhost:50021'
+
+# DiscordBotに関する設定
+bot:
+    # Bot接続に使用するToken
+    token: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    # 管理用サーバーID(いくつかの管理用コマンドが使用できるようになります)
+    ownerGuild: 'xxxxxxxxxxxxx'
+    # Botが接続できるサーバーの最大値
+    maxSession: 16
+
+# デバッグ情報を表示するか
+debug: false

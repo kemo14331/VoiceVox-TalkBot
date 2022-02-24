@@ -14,6 +14,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@types/config": "^0.0.41",
         "@types/glob": "^7.2.0",
         "@types/nedb": "^1.8.12",
         "@typescript-eslint/eslint-plugin": "^5.12.1",
@@ -35,6 +36,7 @@
         "@discordjs/opus": "^0.5.3",
         "@discordjs/voice": "^0.8.0",
         "axios": "^0.26.0",
+        "config": "^3.3.7",
         "discord.js": "^13.6.0",
         "dotenv": "^16.0.0",
         "fs": "^0.0.1-security",
