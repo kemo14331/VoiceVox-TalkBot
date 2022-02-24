@@ -3,7 +3,7 @@ voicevox:
     # VoiceVox-EngineがホストしているURL
     api: 'http://localhost:50021'
     # 読み上げに使用するデフォルトのSpeakerID
-    defaultSpeaker: 1
+    defaultSpeaker: 0
 
 # DiscordBotに関する設定
 bot:
