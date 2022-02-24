@@ -27,5 +27,11 @@ export async function onVoiceStateUpdate(
                 session.textChannel.send(BotMessage.info(`${session.voiceChannel.toString()} から切断しました。`));
             }
         }
+    } else {
+        // キックなど
+        const session = mainProvider.sessionManager.sessions.find((session) => session.guild.id === oldState.guild.id);
+        if (session) {
+            mainProvider.sessionManager.delete(session);
+        }
     }
 }
