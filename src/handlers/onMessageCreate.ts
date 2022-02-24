@@ -2,6 +2,7 @@ import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@d
 import config from 'config';
 import { Client, Message } from 'discord.js';
 import { MainProvider } from '../models/MainProviderModel';
+import { Logger } from '../utils/Logger';
 import { bufferToStream } from '../utils/StreamUtil';
 import { VoiceVoxEngine } from '../VoiceVoxEngine';
 
@@ -25,6 +26,7 @@ export async function onMessageCreate(client: Client, message: Message, mainProv
             }
             const query = await VoiceVoxEngine.getAudioQuery(message.content, speaker);
             if (query) {
+                query.outputSamplingRate = 48000;
                 const buffer = await VoiceVoxEngine.synthesis(query, speaker);
                 if (buffer) {
                     const player = createAudioPlayer({
@@ -36,6 +38,8 @@ export async function onMessageCreate(client: Client, message: Message, mainProv
                     player.play(resource);
                     session.voiceConnection.subscribe(player);
                 }
+            } else {
+                Logger.debug(`Faild to get audio query.`);
             }
         }
     }
