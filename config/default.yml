@@ -13,8 +13,8 @@ bot:
     ownerGuild: 'xxxxxxxxxxxxx'
     # Botが接続できるサーバーの最大値
     maxSession: 16
-    # ユーザーデータの保存パス
-    userDataPath: 'data/data.json'
+    # ユーザーデータの保存フォルダパス
+    userDataFolder: 'data'
 
 # デバッグ情報を表示するか
 debug: false
