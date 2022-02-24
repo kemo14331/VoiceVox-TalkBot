@@ -1,4 +1,5 @@
 import { createAudioPlayer, createAudioResource, NoSubscriberBehavior } from '@discordjs/voice';
+import config from 'config';
 import { Client, Message } from 'discord.js';
 import { MainProvider } from '../models/MainProviderModel';
 import { bufferToStream } from '../utils/StreamUtil';
@@ -17,9 +18,14 @@ export async function onMessageCreate(client: Client, message: Message, mainProv
             (session) => session.textChannel.id === message.channelId && !message.author.bot
         );
         if (session) {
-            const query = await VoiceVoxEngine.getAudioQuery(message.content, 1);
+            let speaker = Number(config.get('voicevox.defaultSpeaker'));
+            const setting = session.settings.find((setting) => setting.id === message.author.id);
+            if (setting) {
+                speaker = setting.speakerId;
+            }
+            const query = await VoiceVoxEngine.getAudioQuery(message.content, speaker);
             if (query) {
-                const buffer = await VoiceVoxEngine.synthesis(query, 1);
+                const buffer = await VoiceVoxEngine.synthesis(query, speaker);
                 if (buffer) {
                     const player = createAudioPlayer({
                         behaviors: {

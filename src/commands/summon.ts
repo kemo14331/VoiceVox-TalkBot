@@ -1,5 +1,6 @@
 import { joinVoiceChannel } from '@discordjs/voice';
 import { CommandExecuteOptions, CommandObject } from '../models/CommandModel';
+import { DataManager } from '../SettingsManager';
 import { CommandReply } from '../utils/messages/CommandReply';
 
 module.exports = async (): Promise<CommandObject> => {
@@ -37,7 +38,7 @@ module.exports = async (): Promise<CommandObject> => {
                         textChannel: options.interaction.channel,
                         voiceChannel: voiceChannel,
                         voiceConnection: connection,
-                        settings: { guildid: guild.id, users: [] },
+                        settings: DataManager.load(guild.id),
                     });
                     await options.interaction.reply(
                         CommandReply.info(

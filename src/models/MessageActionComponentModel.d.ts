@@ -1,4 +1,5 @@
 import { MessageActionRow, MessageComponentInteraction } from 'discord.js';
+import { MainProvider } from './MainProviderModel';
 
 type MessageActionComponentExecuteOptions = {
     interaction: MessageComponentInteraction;

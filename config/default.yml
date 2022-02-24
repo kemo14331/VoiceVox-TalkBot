@@ -2,6 +2,8 @@
 voicevox:
     # VoiceVox-EngineがホストしているURL
     api: 'http://localhost:50021'
+    # 読み上げに使用するデフォルトのSpeakerID
+    defaultSpeaker: 1
 
 # DiscordBotに関する設定
 bot:
@@ -11,6 +13,8 @@ bot:
     ownerGuild: 'xxxxxxxxxxxxx'
     # Botが接続できるサーバーの最大値
     maxSession: 16
+    # ユーザーデータの保存パス
+    userDataPath: 'data/data.json'
 
 # デバッグ情報を表示するか
 debug: false

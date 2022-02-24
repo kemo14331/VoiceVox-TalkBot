@@ -1,4 +1,5 @@
 import { CommandExecuteOptions, CommandObject } from '../models/CommandModel';
+import { DataManager } from '../SettingsManager';
 import { Logger } from '../utils/Logger';
 import { CommandReply } from '../utils/messages/CommandReply';
 
@@ -16,6 +17,7 @@ module.exports = async (): Promise<CommandObject> => {
                     );
                     if (session) {
                         options.mainProvider.sessionManager.delete(session);
+                        DataManager.save(options.interaction.guild.id, session.settings);
                         await options.interaction.reply(
                             CommandReply.info(
                                 `${options.interaction.guild.me.voice.channel.toString()} から切断しました。`

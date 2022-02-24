@@ -6,6 +6,7 @@ import {
     SelectMenuInteraction,
 } from 'discord.js';
 import { MessageActionComponent, MessageActionComponentExecuteOptions } from '../models/MessageActionComponentModel';
+import { DataManager } from '../SettingsManager';
 import { CommandReply } from '../utils/messages/CommandReply';
 import { VoiceVoxEngine } from '../VoiceVoxEngine';
 
@@ -46,6 +47,15 @@ export default {
     },
     execute: async (options: MessageActionComponentExecuteOptions) => {
         await options.interaction.deferReply({ ephemeral: true });
+        const session = options.mainProvider.sessionManager.sessions.find(
+            (session) => session.guild.id === options.interaction.guild?.id
+        );
+        if (!session) {
+            await options.interaction.followUp(
+                CommandReply.error('スタイルの変更は読み上げがアクティブの時のみ可能です。', true)
+            );
+            return;
+        }
         const styleId = (options.interaction as SelectMenuInteraction).values[0];
         const speakers = await VoiceVoxEngine.getSpeakers();
         const speaker = speakers?.find((speaker) => speaker.styles.find((style) => style.id === Number(styleId)));
@@ -59,6 +69,10 @@ export default {
             await options.interaction.followUp(CommandReply.error('情報の取得に失敗しました', true));
             return;
         }
+        DataManager.register(session.settings, {
+            id: String(options.interaction.member?.user.id),
+            speakerId: Number(styleId),
+        });
         const sfbuffer = Buffer.from(styleInfo.icon, 'base64');
         const attachment = new MessageAttachment(sfbuffer, `icon_${speaker.speaker_uuid}.png`);
         await options.interaction.followUp({
