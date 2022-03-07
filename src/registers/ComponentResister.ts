@@ -1,6 +1,6 @@
 import glob from 'glob';
-import { MessageActionComponent } from '../../models/MessageActionComponentModel';
-import { Logger } from '../Logger';
+import { MessageActionComponent } from '../models/MessageActionComponentModel';
+import { Logger } from '../utils/Logger';
 
 /**
  * コンポーネントをロードする

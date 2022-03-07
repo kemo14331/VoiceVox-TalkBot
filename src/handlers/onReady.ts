@@ -1,9 +1,9 @@
 import config from 'config';
 import { ApplicationCommandDataResolvable, Client } from 'discord.js';
 import { MainProvider } from '../models/MainProviderModel';
+import { loadCommands, registerCommands } from '../registers/CommandRegister';
+import { loadComponents } from '../registers/ComponentResister';
 import { Logger } from '../utils/Logger';
-import { loadCommands, registerCommands } from '../utils/registers/CommandRegister';
-import { loadComponents } from '../utils/registers/ComponentResister';
 import { VoiceVoxEngine } from '../VoiceVoxEngine';
 
 /**

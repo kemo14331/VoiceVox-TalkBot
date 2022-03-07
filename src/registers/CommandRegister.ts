@@ -1,7 +1,7 @@
 import { ApplicationCommandData, ApplicationCommandDataResolvable, Client } from 'discord.js';
 import glob from 'glob';
-import { CommandObject } from '../../models/CommandModel';
-import { Logger } from '../Logger';
+import { CommandObject } from '../models/CommandModel';
+import { Logger } from '../utils/Logger';
 
 /**
  * commands内のコマンドをロードする

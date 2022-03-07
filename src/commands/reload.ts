@@ -1,9 +1,9 @@
 import config from 'config';
 import { CommandExecuteOptions, CommandObject } from '../models/CommandModel';
+import { loadCommands, registerCommands } from '../registers/CommandRegister';
+import { loadComponents } from '../registers/ComponentResister';
 import { Logger } from '../utils/Logger';
 import { CommandReply } from '../utils/messages/CommandReply';
-import { loadCommands, registerCommands } from '../utils/registers/CommandRegister';
-import { loadComponents } from '../utils/registers/ComponentResister';
 
 module.exports = async (): Promise<CommandObject> => {
     return {
